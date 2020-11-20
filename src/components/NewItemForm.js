@@ -36,9 +36,15 @@ export default function NewItemForm({ closeModal }) {
     let url = "https://api.imgur.com/3/image";
     fetch(url, requestOptions)
       .then((res) => res.json())
-      .then(({ data }) => {
-        let imageUrl = data.link;
-        getLastKeyInDatabase(imageUrl);
+      .then((result) => {
+        let { data, success, status } = result;
+        if (!success) {
+          //throw an error
+          console.log("Bad Response from Imgur | code: ", status);
+        } else {
+          let imageUrl = data.link;
+          getLastKeyInDatabase(imageUrl);
+        }
       })
       .catch((error) => {
         console.log("Something went wrong", error);
