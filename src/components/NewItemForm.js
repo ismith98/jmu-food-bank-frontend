@@ -2,89 +2,67 @@ import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 //import { useDatabase } from "../contexts/DatabaseContext";
 import firebase from "../firebase";
-const axios = require("axios").default;
 
 export default function NewItemForm({ closeModal }) {
   const [picture, setPicture] = useState();
   const [value, setValue] = useState(10);
   const [itemName, setItemName] = useState();
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
     console.log("submit");
     //setLoading(true);
-    getImgurLink();
-    //getLastKeyFromDatabase();
+    uploadPictureToImgur();
     closeModal();
   }
 
-  function getImgurLink() {
+  function uploadPictureToImgur() {
     var formData = new FormData();
     formData.append("image", picture);
     formData.append("type", "file");
     formData.append("title", itemName);
 
     let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "multipart/form-data");
-    //myHeaders.append("Accept", "application/json, text/plain, */*");
     myHeaders.append("Authorization", `Client-ID 546c25a59c58ad7`);
 
-    let url = "https://api.imgur.com/3/upload";
-    //let testUrl = "http://localhost:5000/";
-    fetch(url, {
+    let requestOptions = {
       method: "POST",
-      //mode: "no-cors",
       headers: myHeaders,
       body: formData,
-    })
+      redirect: "follow",
+    };
+
+    let url = "https://api.imgur.com/3/image";
+    fetch(url, requestOptions)
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        console.log(data.link);
+      .then(({ data }) => {
         let imageUrl = data.link;
-        //getLastKeyFromDatabase(imageUrl)
+        getLastKeyInDatabase(imageUrl);
+      })
+      .catch((error) => {
+        console.log("Something went wrong", error);
       });
   }
 
-  function getLastKeyFromDatabase() {
+  function getLastKeyInDatabase(imageUrl) {
     const lastItemRef = firebase.database().ref("foodItems/");
     lastItemRef
       .orderByKey()
       .limitToLast(1)
       .once("value", (snapshot) => {
         let itemKey = 1 + Number(Object.keys(snapshot.val()));
-        //addToDatabase(itemKey);
-        addToStorage2(itemKey);
+        appendDatabase(itemKey, imageUrl);
       });
   }
 
-  function addToStorage(resolve, reject) {
-    console.log("in storage");
-    setTimeout(2000, resolve);
-    //resolve();
-  }
-
-  function addToStorage2(itemKey) {
-    const imageRef = firebase.storage().ref(`foodImages/${itemKey}`);
-    imageRef.put(picture).then((snapshot) => {
-      console.log("uploaded picture", snapshot);
-    });
-  }
-
-  function addToDatabase(itemKey) {
+  function appendDatabase(itemKey, imageUrl) {
     var itemKeyExists = false;
     const foodItemsRef = firebase.database().ref(`foodItems/${itemKey}`);
     foodItemsRef.transaction(
       (currentData) => {
         if (currentData === null) {
-          /*
-          const promise = new Promise(addToStorage);
-          promise.then(() => {
-            return { item: itemName, amount: value };
-          });
-          */
-          //return { item: itemName, amount: value };
+          return { item: itemName, amount: value, imageUrl: imageUrl };
         } else {
           //Item key already exists
           itemKeyExists = true;
@@ -101,11 +79,12 @@ export default function NewItemForm({ closeModal }) {
 
         console.log("Food Item's data: ", snapshot.val());
         if (itemKeyExists) {
-          addToDatabase(itemKey + 1);
+          appendDatabase(itemKey + 1, imageUrl);
         }
       }
     );
   }
+
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="itemName">
@@ -125,14 +104,14 @@ export default function NewItemForm({ closeModal }) {
           />
         </Col>
         <Col xs="3">
-          <Form.Control value={value} />
+          <Form.Control value={value} onChange={() => {}} />
         </Col>
       </Form.Group>
       <Form.Group controlId="itemImage">
         <Form.File
           id="ChooseImage"
           label="Choose image"
-          accept="image/*"
+          accept=".jpg, .png"
           required
           onChange={(e) => setPicture(e.target.files[0])}
         />
