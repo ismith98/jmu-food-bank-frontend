@@ -62,7 +62,12 @@ export default function NewItemForm({ closeModal }) {
     foodItemsRef.transaction(
       (currentData) => {
         if (currentData === null) {
-          return { item: itemName, amount: value, imageUrl: imageUrl };
+          return {
+            item: itemName,
+            totalInventory: value,
+            amountReserved: 0,
+            imageUrl: imageUrl,
+          };
         } else {
           //Item key already exists
           itemKeyExists = true;
