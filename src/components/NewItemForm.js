@@ -64,7 +64,7 @@ export default function NewItemForm({ closeModal }) {
         if (currentData === null) {
           return {
             item: itemName,
-            totalInventory: value,
+            totalInventory: Number(value),
             amountReserved: 0,
             imageUrl: imageUrl,
           };
