@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 //import { useDatabase } from "../contexts/DatabaseContext";
 import firebase from "../firebase";
+import { useAlert } from "../contexts/AlertContext";
 
 export default function NewItemForm({ closeModal }) {
   const [picture, setPicture] = useState();
   const [value, setValue] = useState(10);
   const [itemName, setItemName] = useState();
   //const [loading, setLoading] = useState(false);
+  const { setErrorAlert, setSuccessAlert } = useAlert();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -40,14 +42,14 @@ export default function NewItemForm({ closeModal }) {
         let { data, success, status } = result;
         if (!success) {
           //throw an error
-          console.log("Bad Response from Imgur | code: ", status);
+          setErrorAlert(`Bad Response from Imgur | code:  ${status}`);
         } else {
           let imageUrl = data.link;
           getLastKeyInDatabase(imageUrl);
         }
       })
       .catch((error) => {
-        console.log("Something went wrong", error);
+        setErrorAlert(`Error uploading your image to imgur |  ${error}`);
       });
   }
 
@@ -81,11 +83,13 @@ export default function NewItemForm({ closeModal }) {
       },
       function (error, committed, snapshot) {
         if (error) {
-          console.log("Transaction failed abnormally!", error);
+          setErrorAlert(`Transaction failed abnormally! |  ${error}`);
         } else if (!committed) {
-          console.log("We aborted the transaction. (Item key already exists)");
+          setErrorAlert(
+            "We aborted the transaction. (Item key already exists)"
+          );
         } else {
-          console.log("Food Item added!");
+          setSuccessAlert("Food Item added!");
         }
 
         console.log("Food Item's data: ", snapshot.val());
