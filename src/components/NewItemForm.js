@@ -3,6 +3,7 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 //import { useDatabase } from "../contexts/DatabaseContext";
 import firebase from "../firebase";
 import { useAlert } from "../contexts/AlertContext";
+//import { nanoid } from "nanoid";
 
 export default function NewItemForm({ closeModal }) {
   const [picture, setPicture] = useState();
@@ -75,6 +76,7 @@ export default function NewItemForm({ closeModal }) {
             totalInventory: Number(value),
             amountReserved: 0,
             imageUrl: imageUrl,
+            id: itemKey,
           };
         } else {
           //Item key already exists
