@@ -22,9 +22,14 @@ export default function ItemList() {
         <SystemAlert />
         <ListHeader />
         {loading ? (
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
+          <>
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span style={{ display: "block" }}>
+              If this takes too long, reload the page
+            </span>
+          </>
         ) : (
           <ListGroup>
             {items.map((item, index) => (
