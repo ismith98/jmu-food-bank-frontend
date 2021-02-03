@@ -12,6 +12,10 @@ const firebaseConfig = {
   measurementId: "G-GN3YV3GPV1",
 };
 
-export default !firebase.apps.length
-  ? firebase.initializeApp(firebaseConfig)
-  : firebase.app();
+function initApp() {
+  let app = firebase.initializeApp(firebaseConfig);
+  app.auth().signInAnonymously();
+  return app;
+}
+
+export default !firebase.apps.length ? initApp() : firebase.app();

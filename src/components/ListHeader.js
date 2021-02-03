@@ -15,7 +15,9 @@ export default function ListHeader() {
 
   return (
     <div>
-      <Button onClick={handleClick}>New Item</Button>
+      <Button onClick={handleClick} className="mb-2">
+        Add Item
+      </Button>
       <Modal show={modalOpen} onHide={closeModal}>
         <NewItemModal closeModal={closeModal} />
       </Modal>

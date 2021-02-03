@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ItemList from "./components/ItemList";
 
@@ -6,8 +6,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>JMU Food Bank Inventory</h1>
-        <h2>Add Items</h2>
+        <h1>JMU Pop-up Pantry Inventory</h1>
         <ItemList />
       </header>
     </div>
