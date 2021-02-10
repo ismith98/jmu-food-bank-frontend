@@ -13,6 +13,7 @@ export default function ItemList() {
   useEffect(() => {
     console.log("use effect");
     getItems(setLoading, setItems);
+    setTimeout(() => getItems(setLoading, setItems), 1000);
     return () => {};
   }, []);
 
@@ -23,8 +24,8 @@ export default function ItemList() {
         <ListHeader />
         {loading ? (
           <>
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
             </div>
             <span style={{ display: "block" }}>
               If this takes too long, reload the page
