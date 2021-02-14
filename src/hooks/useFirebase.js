@@ -27,3 +27,36 @@ export function getItems(setLoading, setItems) {
     setLoading(false);
   });
 }
+
+export function getOrders(/*setLoading,*/ setOrders) {
+  //setLoading(true);
+  const ordersRef = firebase.database().ref("orders/");
+  ordersRef.on("value", (snapshot) => {
+    let value = snapshot.val();
+    if (value !== null) {
+      value = Object.values(value);
+      /*
+      // sort by timeOrdered
+      let foodItems = value.sort(function (a, b) {
+        var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+      setItems(foodItems);
+      */
+      setOrders(value);
+      //setFilteredFoodItems(foodItems);
+      //console.log(foodItems);
+      console.log(value);
+    }
+    //setLoading(false);
+  });
+}
