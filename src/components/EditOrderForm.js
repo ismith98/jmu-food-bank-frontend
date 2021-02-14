@@ -50,7 +50,7 @@ export default function EditOrderForm({ order }) {
         <Button type="submit" className="mr-3">
           Confirm Changes
         </Button>
-        <Button variant="danger">Cancel Order</Button>
+        <Button variant="danger">Remove Order</Button>
       </div>
     </Form>
   );
