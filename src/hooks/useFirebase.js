@@ -72,3 +72,15 @@ export function deleteItem(itemId) {
       console.log("Remove failed: " + error.message);
     });
 }
+
+export function deleteOrder(orderId) {
+  const itemRef = firebase.database().ref(`orders/${orderId}`);
+  itemRef
+    .remove()
+    .then(function () {
+      console.log("Remove succeeded.");
+    })
+    .catch(function (error) {
+      console.log("Remove failed: " + error.message);
+    });
+}

@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
+import { deleteOrder } from "../hooks/useFirebase";
 
-export default function EditOrderForm({ order }) {
+export default function EditOrderForm({ order, closeModal }) {
   const [items, setItems] = useState(order.itemsInCart);
 
   function replaceAmount(currentItem, e) {
     currentItem.amount = Number(e.target.value);
     return currentItem;
+  }
+
+  function removeOrder() {
+    deleteOrder(order.orderId);
+    closeModal();
   }
 
   function showFormGroup(item) {
@@ -59,7 +65,9 @@ export default function EditOrderForm({ order }) {
         <Button type="submit" className="mr-3">
           Confirm Changes
         </Button>
-        <Button variant="danger">Remove Order</Button>
+        <Button variant="danger" onClick={removeOrder}>
+          Remove Order
+        </Button>
       </div>
     </Form>
   );
