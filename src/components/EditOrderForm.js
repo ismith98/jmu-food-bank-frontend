@@ -47,7 +47,12 @@ export default function EditOrderForm({ order }) {
       {items.map((item) => showFormGroup(item))}
       <Form.Group controlId="changeLog">
         <Form.Label>How and why did you change this order?</Form.Label>
-        <Form.Control as="textarea" rows={3} />
+        <Form.Control
+          as="textarea"
+          rows={3}
+          placeholder="What changes did you make?"
+          required
+        />
       </Form.Group>
 
       <div className="d-flex justify-content-center ">

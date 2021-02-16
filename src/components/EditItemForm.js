@@ -7,8 +7,8 @@ export default function EditItemForm({ item, closeModal }) {
   const [amountReserved, setAmountReserved] = useState(item.amountReserved);
   const [totalInventory, setTotalInventory] = useState(item.totalInventory);
 
+  // Update an item's values when they are changed in the DB
   useEffect(() => {
-    console.log(item.name, item.amountReserved, item.totalInventory);
     setItemName(item.name);
     setAmountReserved(item.amountReserved);
     setTotalInventory(item.totalInventory);
