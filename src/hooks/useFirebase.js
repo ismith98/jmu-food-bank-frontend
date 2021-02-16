@@ -60,3 +60,15 @@ export function getOrders(/*setLoading,*/ setOrders) {
     //setLoading(false);
   });
 }
+
+export function deleteItem(itemId) {
+  const itemRef = firebase.database().ref(`foodItems/${itemId}`);
+  itemRef
+    .remove()
+    .then(function () {
+      console.log("Remove succeeded.");
+    })
+    .catch(function (error) {
+      console.log("Remove failed: " + error.message);
+    });
+}

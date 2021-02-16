@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
+import { deleteItem } from "../hooks/useFirebase";
 
-export default function EditItemForm({ item }) {
+export default function EditItemForm({ item, closeModal }) {
   const [itemName, setItemName] = useState(item.name);
   const [amountReserved, setAmountReserved] = useState(item.amountReserved);
   const [totalInventory, setTotalInventory] = useState(item.totalInventory);
+
+  function removeItem() {
+    deleteItem(item.id);
+    closeModal();
+  }
 
   return (
     <Form /*onSubmit={handleSubmit}*/>
@@ -48,7 +54,9 @@ export default function EditItemForm({ item }) {
         <Button type="submit" className="mr-3">
           Confirm Changes
         </Button>
-        <Button variant="danger">Remove Item</Button>
+        <Button variant="danger" onClick={removeItem}>
+          Remove Item
+        </Button>
       </div>
     </Form>
   );
