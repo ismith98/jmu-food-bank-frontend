@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { deleteItem } from "../hooks/useFirebase";
 
@@ -6,6 +6,13 @@ export default function EditItemForm({ item, closeModal }) {
   const [itemName, setItemName] = useState(item.name);
   const [amountReserved, setAmountReserved] = useState(item.amountReserved);
   const [totalInventory, setTotalInventory] = useState(item.totalInventory);
+
+  useEffect(() => {
+    console.log(item.name, item.amountReserved, item.totalInventory);
+    setItemName(item.name);
+    setAmountReserved(item.amountReserved);
+    setTotalInventory(item.totalInventory);
+  }, [item]);
 
   function removeItem() {
     deleteItem(item.id);
@@ -34,6 +41,7 @@ export default function EditItemForm({ item, closeModal }) {
             value={amountReserved}
             type="number"
             onChange={(e) => setAmountReserved(e.target.value)}
+            disabled
           />
         </Col>
       </Form.Group>
