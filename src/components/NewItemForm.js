@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 //import { useDatabase } from "../contexts/DatabaseContext";
 import firebase from "../firebase";
 import { useAlert } from "../contexts/AlertContext";
-//import { nanoid } from "nanoid";
+import { nanoid } from "nanoid";
 
 export default function NewItemForm({ closeModal }) {
   const [picture, setPicture] = useState();
@@ -46,7 +46,8 @@ export default function NewItemForm({ closeModal }) {
           setErrorAlert(`Bad Response from Imgur | code:  ${status}`);
         } else {
           let imageUrl = data.link;
-          getLastKeyInDatabase(imageUrl);
+          addItemToDatabase(imageUrl);
+          //getLastKeyInDatabase(imageUrl);
         }
       })
       .catch((error) => {
@@ -54,20 +55,10 @@ export default function NewItemForm({ closeModal }) {
       });
   }
 
-  function getLastKeyInDatabase(imageUrl) {
-    const lastItemRef = firebase.database().ref("foodItems/");
-    lastItemRef
-      .orderByKey()
-      .limitToLast(1)
-      .once("value", (snapshot) => {
-        let itemKey = 1 + Number(Object.keys(snapshot.val()));
-        appendDatabase(itemKey, imageUrl);
-      });
-  }
-
-  function appendDatabase(itemKey, imageUrl) {
+  function addItemToDatabase(imageUrl) {
+    const itemId = nanoid();
     var itemKeyExists = false;
-    const foodItemsRef = firebase.database().ref(`foodItems/${itemKey}`);
+    const foodItemsRef = firebase.database().ref(`foodItems/${itemId}`);
     foodItemsRef.transaction(
       (currentData) => {
         if (currentData === null) {
@@ -76,7 +67,7 @@ export default function NewItemForm({ closeModal }) {
             totalInventory: Number(value),
             amountReserved: 0,
             imageUrl: imageUrl,
-            id: itemKey,
+            id: itemId,
           };
         } else {
           //Item key already exists
@@ -96,7 +87,7 @@ export default function NewItemForm({ closeModal }) {
 
         console.log("Food Item's data: ", snapshot.val());
         if (itemKeyExists) {
-          appendDatabase(itemKey + 1, imageUrl);
+          addItemToDatabase(imageUrl);
         }
       }
     );
