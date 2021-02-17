@@ -6,8 +6,9 @@ export function getItems(setLoading, setItems) {
   foodItemsRef.on("value", (snapshot) => {
     let value = snapshot.val();
     if (value !== null) {
+      let items = Object.values(value);
       // sort by name
-      let foodItems = value.sort(function (a, b) {
+      let foodItems = items.sort((a, b) => {
         var nameA = a.name.toUpperCase(); // ignore upper and lowercase
         var nameB = b.name.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
