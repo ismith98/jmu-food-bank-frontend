@@ -40,6 +40,7 @@ export default function EditItemForm({ item, closeModal }) {
         <Col sm="8">
           <Form.Control
             value={itemName}
+            required
             onChange={(e) => setItemName(e.target.value)}
           />
         </Col>
@@ -65,17 +66,19 @@ export default function EditItemForm({ item, closeModal }) {
           <Form.Control
             value={totalInventory}
             type="number"
+            required
             onChange={(e) => setTotalInventory(e.target.value)}
           />
         </Col>
       </Form.Group>
-      <Form.Group as={Row} controlId="totalInventory">
+      <Form.Group as={Row} controlId="itemId">
         <Form.Label column sm="4">
           Item Id
         </Form.Label>
         <Col sm="8">
           <Form.Control
             value={itemId}
+            required
             onChange={(e) => setItemId(e.target.value)}
           />
         </Col>
