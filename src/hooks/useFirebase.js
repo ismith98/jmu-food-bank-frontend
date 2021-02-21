@@ -66,7 +66,7 @@ function sortByTimeOrdered(order1, order2) {
 export function addItemToDatabase(itemInfo) {
   itemInfo.itemId = nanoid();
   const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.itemId}`);
-  foodItemsRef.transaction(
+  let result = foodItemsRef.transaction(
     (currentData) => {
       if (currentData === null) {
         return itemInfo;
@@ -101,6 +101,7 @@ export function addItemToDatabase(itemInfo) {
       */
     }
   );
+  return result;
 }
 
 export function updateItem(itemInfo) {
