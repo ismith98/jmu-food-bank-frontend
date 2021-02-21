@@ -52,20 +52,12 @@ export default function NewItemForm({ closeModal }) {
             amountReserved: 0,
             imageUrl: imageUrl,
           };
-          checkForFirebaseErrors(addItemToDatabase(itemInfo));
+          addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert);
         }
       })
       .catch((error) => {
         setErrorAlert(`Error uploading your image to imgur |  ${error}`);
       });
-  }
-
-  function checkForFirebaseErrors(result) {
-    if (result.error) {
-      setErrorAlert(`Transaction failed abnormally! |  ${result.message}`);
-    } else {
-      setSuccessAlert(result.message);
-    }
   }
 
   /*

@@ -63,10 +63,10 @@ function sortByTimeOrdered(order1, order2) {
   return 0;
 }
 
-export function addItemToDatabase(itemInfo) {
-  itemInfo.itemId = nanoid();
-  const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.itemId}`);
-  let result = foodItemsRef.transaction(
+export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
+  itemInfo.id = nanoid();
+  const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
+  foodItemsRef.transaction(
     (currentData) => {
       if (currentData === null) {
         return itemInfo;
@@ -77,31 +77,16 @@ export function addItemToDatabase(itemInfo) {
     },
     function (error, committed, snapshot) {
       if (error) {
-        return {
-          error: true,
-          message: `Transaction failed abnormally! |  ${error}`,
-        };
-        //setErrorAlert(`Transaction failed abnormally! |  ${error}`);
+        setErrorAlert(`Transaction failed abnormally! |  ${error}`);
       } else if (!committed) {
         // Item id already exists
         addItemToDatabase(itemInfo);
       } else {
-        return {
-          error: false,
-          message: "Food Item added!",
-        };
-        //setSuccessAlert("Food Item added!");
+        setSuccessAlert("Food Item added!");
       }
-
-      /*
       console.log("Food Item's data: ", snapshot.val());
-      if (itemKeyExists) {
-        addItemToDatabase(itemInfo);
-      }
-      */
     }
   );
-  return result;
 }
 
 export function updateItem(itemInfo) {
