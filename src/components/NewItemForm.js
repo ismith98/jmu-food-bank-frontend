@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 //import { useDatabase } from "../contexts/DatabaseContext";
-import firebase from "../firebase";
+//import firebase from "../firebase";
 import { useAlert } from "../contexts/AlertContext";
-import { nanoid } from "nanoid";
+import { addItemToDatabase } from "../hooks/useFirebase";
 
 export default function NewItemForm({ closeModal }) {
   const [picture, setPicture] = useState();
@@ -46,8 +46,13 @@ export default function NewItemForm({ closeModal }) {
           setErrorAlert(`Bad Response from Imgur | code:  ${status}`);
         } else {
           let imageUrl = data.link;
-          addItemToDatabase(imageUrl);
-          //getLastKeyInDatabase(imageUrl);
+          const itemInfo = {
+            name: itemName,
+            totalInventory: Number(value),
+            amountReserved: 0,
+            imageUrl: imageUrl,
+          };
+          checkForFirebaseErrors(addItemToDatabase(itemInfo));
         }
       })
       .catch((error) => {
@@ -55,20 +60,23 @@ export default function NewItemForm({ closeModal }) {
       });
   }
 
-  function addItemToDatabase(imageUrl) {
-    const itemId = nanoid();
+  function checkForFirebaseErrors(result) {
+    if (result.error) {
+      setErrorAlert(`Transaction failed abnormally! |  ${result.message}`);
+    } else {
+      setSuccessAlert(result.message);
+    }
+  }
+
+  /*
+  function addItemToDatabase(itemInfo) {
+    itemInfo.itemId = nanoid();
     var itemKeyExists = false;
-    const foodItemsRef = firebase.database().ref(`foodItems/${itemId}`);
+    const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.itemId}`);
     foodItemsRef.transaction(
       (currentData) => {
         if (currentData === null) {
-          return {
-            name: itemName,
-            totalInventory: Number(value),
-            amountReserved: 0,
-            imageUrl: imageUrl,
-            id: itemId,
-          };
+          return itemInfo;
         } else {
           //Item key already exists
           itemKeyExists = true;
@@ -78,20 +86,18 @@ export default function NewItemForm({ closeModal }) {
         if (error) {
           setErrorAlert(`Transaction failed abnormally! |  ${error}`);
         } else if (!committed) {
-          setErrorAlert(
-            "We aborted the transaction. (Item key already exists)"
-          );
+          setErrorAlert("We aborted the transaction. (Item key already exists)");
         } else {
           setSuccessAlert("Food Item added!");
         }
-
+  
         console.log("Food Item's data: ", snapshot.val());
         if (itemKeyExists) {
-          addItemToDatabase(imageUrl);
+          addItemToDatabase(itemInfo);
         }
       }
     );
-  }
+  }*/
 
   return (
     <Form onSubmit={handleSubmit}>

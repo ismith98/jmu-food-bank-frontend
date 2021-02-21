@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { AlertProvider } from "../contexts/AlertContext";
 import SystemAlert from "./SystemAlert";
 import ListHeader from "./ListHeader";
 import { ListGroup } from "react-bootstrap";
@@ -54,31 +53,29 @@ export default function ItemList() {
   return (
     <div>
       {/* Context providers for error messages */}
-      <AlertProvider>
-        <SystemAlert />
+      <SystemAlert />
 
-        {/* New Item Button inside of header */}
-        <ListHeader />
+      {/* New Item Button inside of header */}
+      <ListHeader />
 
-        {loading ? (
-          showSpinner()
-        ) : (
-          <Tabs
-            defaultActiveKey="inventory"
-            activeKey={tabKey}
-            onSelect={(key) => setTabKey(key)}
-            id="ModeSelector"
-            style={{ justifyContent: "center" }}
-          >
-            <Tab eventKey="inventory" title="Inventory">
-              {listItems(tabKey)}
-            </Tab>
-            <Tab eventKey="orders" title={`Orders (${orders.length})`}>
-              {listItems(tabKey)}
-            </Tab>
-          </Tabs>
-        )}
-      </AlertProvider>
+      {loading ? (
+        showSpinner()
+      ) : (
+        <Tabs
+          defaultActiveKey="inventory"
+          activeKey={tabKey}
+          onSelect={(key) => setTabKey(key)}
+          id="ModeSelector"
+          style={{ justifyContent: "center" }}
+        >
+          <Tab eventKey="inventory" title="Inventory">
+            {listItems(tabKey)}
+          </Tab>
+          <Tab eventKey="orders" title={`Orders (${orders.length})`}>
+            {listItems(tabKey)}
+          </Tab>
+        </Tabs>
+      )}
     </div>
   );
 }
