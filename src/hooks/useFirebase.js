@@ -89,7 +89,7 @@ export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
   );
 }
 
-export function updateItem(itemInfo) {
+export function updateItem(itemInfo, setErrorAlert, setSuccessAlert) {
   const itemRef = firebase.database().ref(`foodItems/${itemInfo.itemId}`);
   itemRef
     .update({
@@ -97,34 +97,14 @@ export function updateItem(itemInfo) {
       id: itemInfo.itemId,
       totalInventory: itemInfo.totalInventory,
     })
-    .then(function () {
-      console.log("Update succeeded.");
-    })
-    .catch(function (error) {
-      console.log("Update failed: " + error.message);
-    });
+    .then(() => setSuccessAlert("Update succeeded."))
+    .catch((error) => setErrorAlert("Update failed: " + error.message));
 }
 
-export function deleteItem(itemId) {
-  const itemRef = firebase.database().ref(`foodItems/${itemId}`);
-  itemRef
+export function removeFromDatabase(path, id, setErrorAlert, setSuccessAlert) {
+  const ref = firebase.database().ref(`${path}/${id}`);
+  ref
     .remove()
-    .then(function () {
-      console.log("Remove succeeded.");
-    })
-    .catch(function (error) {
-      console.log("Remove failed: " + error.message);
-    });
-}
-
-export function deleteOrder(orderId) {
-  const itemRef = firebase.database().ref(`orders/${orderId}`);
-  itemRef
-    .remove()
-    .then(function () {
-      console.log("Remove succeeded.");
-    })
-    .catch(function (error) {
-      console.log("Remove failed: " + error.message);
-    });
+    .then(() => setSuccessAlert("Remove Successful"))
+    .catch((error) => setErrorAlert("Remove Failed: " + error.message));
 }

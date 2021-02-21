@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import { deleteOrder } from "../hooks/useFirebase";
+import { removeFromDatabase } from "../hooks/useFirebase";
+import { useAlert } from "../contexts/AlertContext";
 
 export default function EditOrderForm({ order, closeModal }) {
   const [items, setItems] = useState(order.itemsInCart);
+  const { setErrorAlert, setSuccessAlert } = useAlert();
 
   function replaceAmount(currentItem, e) {
     currentItem.amount = Number(e.target.value);
@@ -11,7 +13,8 @@ export default function EditOrderForm({ order, closeModal }) {
   }
 
   function removeOrder() {
-    deleteOrder(order.orderId);
+    let path = "orders";
+    removeFromDatabase(path, order.orderId, setErrorAlert, setSuccessAlert);
     closeModal();
   }
 

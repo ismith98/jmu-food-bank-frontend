@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import { updateItem, deleteItem } from "../hooks/useFirebase";
+import { updateItem, removeFromDatabase } from "../hooks/useFirebase";
+import { useAlert } from "../contexts/AlertContext";
 
 export default function EditItemForm({ item, closeModal }) {
   const [itemName, setItemName] = useState(item.name);
   const [amountReserved, setAmountReserved] = useState(item.amountReserved);
   const [totalInventory, setTotalInventory] = useState(item.totalInventory);
   const [itemId, setItemId] = useState(item.id);
+  const { setErrorAlert, setSuccessAlert } = useAlert();
 
   // Update an item's values when they are changed in the DB
   useEffect(() => {
@@ -16,19 +18,21 @@ export default function EditItemForm({ item, closeModal }) {
     setItemId(item.id);
   }, [item]);
 
-  function confirmChanges() {
+  function confirmChanges(e) {
+    e.preventDefault();
     const itemInfo = { itemName, itemId, totalInventory };
-    updateItem(itemInfo);
+    updateItem(itemInfo, setErrorAlert, setSuccessAlert);
     closeModal();
   }
 
   function removeItem() {
-    deleteItem(item.id);
+    let path = "foodItems";
+    removeFromDatabase(path, item.id, setErrorAlert, setSuccessAlert);
     closeModal();
   }
 
   return (
-    <Form /*onSubmit={handleSubmit}*/>
+    <Form>
       <Form.Group as={Row} controlId="itemName">
         <Form.Label column sm="4">
           Item Name

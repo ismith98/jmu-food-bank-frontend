@@ -9,13 +9,10 @@ export default function NewItemForm({ closeModal }) {
   const [picture, setPicture] = useState();
   const [value, setValue] = useState(10);
   const [itemName, setItemName] = useState();
-  //const [loading, setLoading] = useState(false);
   const { setErrorAlert, setSuccessAlert } = useAlert();
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("submit");
-    //setLoading(true);
     uploadPictureToImgur();
     closeModal();
   }
@@ -59,37 +56,6 @@ export default function NewItemForm({ closeModal }) {
         setErrorAlert(`Error uploading your image to imgur |  ${error}`);
       });
   }
-
-  /*
-  function addItemToDatabase(itemInfo) {
-    itemInfo.itemId = nanoid();
-    var itemKeyExists = false;
-    const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.itemId}`);
-    foodItemsRef.transaction(
-      (currentData) => {
-        if (currentData === null) {
-          return itemInfo;
-        } else {
-          //Item key already exists
-          itemKeyExists = true;
-        }
-      },
-      function (error, committed, snapshot) {
-        if (error) {
-          setErrorAlert(`Transaction failed abnormally! |  ${error}`);
-        } else if (!committed) {
-          setErrorAlert("We aborted the transaction. (Item key already exists)");
-        } else {
-          setSuccessAlert("Food Item added!");
-        }
-  
-        console.log("Food Item's data: ", snapshot.val());
-        if (itemKeyExists) {
-          addItemToDatabase(itemInfo);
-        }
-      }
-    );
-  }*/
 
   return (
     <Form onSubmit={handleSubmit}>
