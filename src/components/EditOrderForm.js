@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col, Button, ListGroup } from "react-bootstrap";
 import { removeFromDatabase } from "../hooks/useFirebase";
 import { useAlert } from "../contexts/AlertContext";
 
@@ -25,10 +25,10 @@ export default function EditOrderForm({ order, closeModal }) {
 
   function showFormGroup(item) {
     return (
-      <>
+      <ListGroup.Item className="capitalize">
         <Form.Group key={item.name} as={Row} controlId={item.name}>
           <Form.Label column sm="4">
-            <b>{item.name}</b>
+            <b>{item.name} Amount</b>
           </Form.Label>
           <Col sm="8">
             <Form.Control
@@ -65,39 +65,34 @@ export default function EditOrderForm({ order, closeModal }) {
             />
           </Col>
         </Form.Group>
-      </>
+      </ListGroup.Item>
     );
   }
 
   return (
     <Form /*onSubmit={handleSubmit}*/>
-      <Form.Group as={Row}>
-        <Form.Label column sm="4">
-          Item Name
-        </Form.Label>
-        <Form.Label column sm="8">
-          Amount
-        </Form.Label>
-      </Form.Group>
-      {items.map((item) => showFormGroup(item))}
-      <Form.Group controlId="changeLog">
-        <Form.Label>How and why did you change this order?</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={3}
-          placeholder="What changes did you make?"
-          required
-        />
-      </Form.Group>
+      <ListGroup variant="flush">
+        {items.map((item) => showFormGroup(item))}
 
-      <div className="d-flex justify-content-center ">
-        <Button type="submit" className="mr-3">
-          Confirm Changes
-        </Button>
-        <Button variant="danger" onClick={removeOrder}>
-          Remove Order
-        </Button>
-      </div>
+        <Form.Group controlId="changeLog" className="mt-3">
+          <Form.Label>What changes did you make and why?</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder="What changes did you make?"
+            required
+          />
+        </Form.Group>
+
+        <div className="d-flex justify-content-center ">
+          <Button type="submit" className="mr-3">
+            Confirm Changes
+          </Button>
+          <Button variant="danger" onClick={removeOrder}>
+            Remove Order
+          </Button>
+        </div>
+      </ListGroup>
     </Form>
   );
 }

@@ -26,4 +26,9 @@
 .edit-button {
   height: 100px;
 }
+
+.capitalize {
+  text-transform: capitalize;
+  color: black;
+}
 /*# sourceMappingURL=App.css.map */

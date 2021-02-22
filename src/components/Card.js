@@ -13,7 +13,7 @@ export default function Card({ tabKey, currentItem, order }) {
   function showItemInfo() {
     return (
       <>
-        <div>{currentItem.name}</div>
+        <b>{currentItem.name}</b>
         <div> Amount Reserved: {currentItem.amountReserved} </div>
         <div> Total Inventory: {currentItem.totalInventory} </div>
         <div> Max Reservable: {currentItem.maxReservable} </div>
@@ -59,8 +59,8 @@ export default function Card({ tabKey, currentItem, order }) {
 
   return (
     <>
-      <ListGroup.Item style={{ color: "black", textTransform: "capitalize" }}>
-        <div className="d-flex flex-row">
+      <ListGroup.Item>
+        <div className="d-flex flex-row capitalize">
           {tabKey === "inventory" ? showItemImage() : showOrderImage()}
 
           <div className="mr-2 ml-2">
