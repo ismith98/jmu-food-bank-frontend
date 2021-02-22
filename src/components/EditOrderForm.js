@@ -12,6 +12,11 @@ export default function EditOrderForm({ order, closeModal }) {
     return currentItem;
   }
 
+  function replaceId(currentItem, e) {
+    currentItem.id = e.target.value;
+    return currentItem;
+  }
+
   function removeOrder() {
     let path = "orders";
     removeFromDatabase(path, order.orderId, setErrorAlert, setSuccessAlert);
@@ -20,26 +25,47 @@ export default function EditOrderForm({ order, closeModal }) {
 
   function showFormGroup(item) {
     return (
-      <Form.Group key={item.name} as={Row} controlId={item.name}>
-        <Form.Label column sm="4">
-          {item.name}
-        </Form.Label>
-        <Col sm="8">
-          <Form.Control
-            value={item.amount}
-            type="number"
-            onChange={(e) => {
-              return setItems((Items) =>
-                Items.map((currentItem) =>
-                  item.name === currentItem.name
-                    ? replaceAmount(currentItem, e)
-                    : currentItem
-                )
-              );
-            }}
-          />
-        </Col>
-      </Form.Group>
+      <>
+        <Form.Group key={item.name} as={Row} controlId={item.name}>
+          <Form.Label column sm="4">
+            <b>{item.name}</b>
+          </Form.Label>
+          <Col sm="8">
+            <Form.Control
+              value={item.amount}
+              type="number"
+              onChange={(e) => {
+                return setItems((Items) =>
+                  Items.map((currentItem) =>
+                    item.name === currentItem.name
+                      ? replaceAmount(currentItem, e)
+                      : currentItem
+                  )
+                );
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group key={item.name} as={Row} controlId={`${item.name}-Id`}>
+          <Form.Label column sm="4">
+            {item.name} Id
+          </Form.Label>
+          <Col sm="8">
+            <Form.Control
+              value={item.id}
+              onChange={(e) => {
+                return setItems((Items) =>
+                  Items.map((currentItem) =>
+                    item.id === currentItem.id
+                      ? replaceId(currentItem, e)
+                      : currentItem
+                  )
+                );
+              }}
+            />
+          </Col>
+        </Form.Group>
+      </>
     );
   }
 

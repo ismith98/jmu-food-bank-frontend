@@ -7,6 +7,7 @@ export default function EditItemForm({ item, closeModal }) {
   const [itemName, setItemName] = useState(item.name);
   const [amountReserved, setAmountReserved] = useState(item.amountReserved);
   const [totalInventory, setTotalInventory] = useState(item.totalInventory);
+  const [maxReservable, setMaxReservable] = useState(item.maxReservable);
   const [itemId, setItemId] = useState(item.id);
   const { setErrorAlert, setSuccessAlert } = useAlert();
 
@@ -15,12 +16,18 @@ export default function EditItemForm({ item, closeModal }) {
     setItemName(item.name);
     setAmountReserved(item.amountReserved);
     setTotalInventory(item.totalInventory);
+    setMaxReservable(item.maxReservable);
     setItemId(item.id);
   }, [item]);
 
   function confirmChanges(e) {
     e.preventDefault();
-    const itemInfo = { itemName, itemId, totalInventory };
+    const itemInfo = {
+      name: itemName,
+      id: itemId,
+      totalInventory: Number(totalInventory),
+      maxReservable: Number(maxReservable),
+    };
     updateItem(itemInfo, setErrorAlert, setSuccessAlert);
     closeModal();
   }
@@ -71,6 +78,20 @@ export default function EditItemForm({ item, closeModal }) {
           />
         </Col>
       </Form.Group>
+      <Form.Group as={Row} controlId="maxReservable">
+        <Form.Label column sm="4">
+          Max Reservable (per person)
+        </Form.Label>
+        <Col sm="8">
+          <Form.Control
+            value={maxReservable}
+            type="number"
+            required
+            onChange={(e) => setMaxReservable(e.target.value)}
+          />
+        </Col>
+      </Form.Group>
+
       <Form.Group as={Row} controlId="itemId">
         <Form.Label column sm="4">
           Item Id

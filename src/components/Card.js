@@ -16,6 +16,7 @@ export default function Card({ tabKey, currentItem, order }) {
         <div>{currentItem.name}</div>
         <div> Amount Reserved: {currentItem.amountReserved} </div>
         <div> Total Inventory: {currentItem.totalInventory} </div>
+        <div> Max Reservable: {currentItem.maxReservable} </div>
       </>
     );
   }
@@ -42,11 +43,13 @@ export default function Card({ tabKey, currentItem, order }) {
 
   function showItemImage() {
     return (
-      <img
-        src={currentItem.imageUrl}
-        alt={currentItem.name}
-        style={{ width: "100px", height: "100px" }}
-      />
+      <div className="d-flex align-items-center">
+        <img
+          src={currentItem.imageUrl}
+          alt={currentItem.name}
+          style={{ width: "100px", height: "100px" }}
+        />
+      </div>
     );
   }
 

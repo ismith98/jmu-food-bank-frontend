@@ -90,13 +90,9 @@ export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
 }
 
 export function updateItem(itemInfo, setErrorAlert, setSuccessAlert) {
-  const itemRef = firebase.database().ref(`foodItems/${itemInfo.itemId}`);
+  const itemRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
   itemRef
-    .update({
-      name: itemInfo.itemName,
-      id: itemInfo.itemId,
-      totalInventory: itemInfo.totalInventory,
-    })
+    .update(itemInfo)
     .then(() => setSuccessAlert("Update succeeded."))
     .catch((error) => setErrorAlert("Update failed: " + error.message));
 }

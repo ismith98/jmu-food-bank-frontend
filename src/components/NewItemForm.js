@@ -47,8 +47,8 @@ export default function NewItemForm({ closeModal }) {
           let imageUrl = data.link;
           const itemInfo = {
             name: itemName,
-            totalInventory: totalInventory,
-            maxReservable: maxReservable,
+            totalInventory: Number(totalInventory),
+            maxReservable: Number(maxReservable),
             amountReserved: 0,
             imageUrl: imageUrl,
           };
