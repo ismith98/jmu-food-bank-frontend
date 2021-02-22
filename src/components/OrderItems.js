@@ -1,0 +1,58 @@
+import React from "react";
+import { Form, Row, Col, ListGroup } from "react-bootstrap";
+
+export default function OrderItems({ item, setItems }) {
+  function replaceAmount(currentItem, e) {
+    currentItem.amount = Number(e.target.value);
+    return currentItem;
+  }
+
+  function replaceId(currentItem, e) {
+    currentItem.id = e.target.value;
+    return currentItem;
+  }
+
+  return (
+    <ListGroup.Item className="capitalize">
+      <Form.Group key={item.name} as={Row} controlId={item.name}>
+        <Form.Label column sm="4">
+          <b>{item.name} Amount</b>
+        </Form.Label>
+        <Col sm="8">
+          <Form.Control
+            value={item.amount}
+            type="number"
+            onChange={(e) => {
+              return setItems((Items) =>
+                Items.map((currentItem) =>
+                  item.name === currentItem.name
+                    ? replaceAmount(currentItem, e)
+                    : currentItem
+                )
+              );
+            }}
+          />
+        </Col>
+      </Form.Group>
+      <Form.Group key={item.name} as={Row} controlId={`${item.name}-Id`}>
+        <Form.Label column sm="4">
+          {item.name} Id
+        </Form.Label>
+        <Col sm="8">
+          <Form.Control
+            value={item.id}
+            onChange={(e) => {
+              return setItems((Items) =>
+                Items.map((currentItem) =>
+                  item.id === currentItem.id
+                    ? replaceId(currentItem, e)
+                    : currentItem
+                )
+              );
+            }}
+          />
+        </Col>
+      </Form.Group>
+    </ListGroup.Item>
+  );
+}

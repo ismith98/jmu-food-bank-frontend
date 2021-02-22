@@ -1,6 +1,6 @@
 import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import ItemList from "./components/ItemList";
+import List from "./components/List";
 import { AlertProvider } from "./contexts/AlertContext";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
       <header className="App-header">
         <h1>JMU Pop-up Pantry Inventory</h1>
         <AlertProvider>
-          <ItemList />
+          <List />
         </AlertProvider>
       </header>
     </div>
