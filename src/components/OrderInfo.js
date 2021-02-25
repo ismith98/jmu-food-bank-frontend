@@ -6,7 +6,7 @@ export default function OrderInfo({ order }) {
       <div>
         Order Id: <b>{order.orderId}</b>
       </div>
-      <div>
+      <div className="capitalize">
         Items:{" "}
         {order.itemsInCart.map((item, index) => {
           return index === order.itemsInCart.length - 1

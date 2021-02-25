@@ -63,30 +63,49 @@ function sortByTimeOrdered(order1, order2) {
   return 0;
 }
 
-export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
+function addItem(itemInfo) {
   itemInfo.id = nanoid();
   const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
-  foodItemsRef.transaction(
-    (currentData) => {
-      if (currentData === null) {
-        return itemInfo;
-      } else {
-        //Item Id already exists
-        return; //Abort the transaction
-      }
-    },
-    function (error, committed, snapshot) {
-      if (error) {
-        setErrorAlert(`Transaction failed abnormally! |  ${error}`);
-      } else if (!committed) {
-        // Item id already exists
-        addItemToDatabase(itemInfo);
-      } else {
-        setSuccessAlert("Food Item added!");
-      }
-      console.log("Food Item's data: ", snapshot.val());
+  return foodItemsRef.transaction((currentData) => {
+    if (currentData === null) {
+      return itemInfo;
+    } else {
+      //Item Id already exists
+      return; //Abort the transaction
     }
+  });
+}
+
+export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
+  addItem(itemInfo).then((error, committed, snapshot) =>
+    followUp(
+      error,
+      committed,
+      snapshot,
+      itemInfo,
+      setErrorAlert,
+      setSuccessAlert
+    )
   );
+}
+
+function followUp(
+  error,
+  committed,
+  snapshot,
+  itemInfo,
+  setErrorAlert,
+  setSuccessAlert
+) {
+  if (error) {
+    setErrorAlert(`Transaction failed abnormally! |  ${error}`);
+  } else if (!committed) {
+    // Item id already exists
+    addItemToDatabase(itemInfo);
+  } else {
+    setSuccessAlert("Food Item added!");
+  }
+  console.log("Food Item's data: ", snapshot.val());
 }
 
 export function updateItem(itemInfo, setErrorAlert, setSuccessAlert) {
@@ -104,3 +123,61 @@ export function removeFromDatabase(path, id, setErrorAlert, setSuccessAlert) {
     .then(() => setSuccessAlert("Remove Successful"))
     .catch((error) => setErrorAlert("Remove Failed: " + error.message));
 }
+
+/*
+export function orderDelivered(order, setInventoryAvailable) {
+  order.itemsInCart.forEach((item) =>
+    checkInventoryForOneItem(item, setInventoryAvailable)
+  );
+}
+
+function checkInventoryForOneItem(
+  item,
+  setInventoryAvailable,
+  setVisitedAllItems
+) {
+  const foodItemsRef = firebase.database().ref(`foodItems/${item.id}/`);
+  foodItemsRef.transaction(
+    (foodItem) => {
+      if (foodItem) {
+        console.log(foodItem);
+        let itemsAvailable =
+          foodItem.totalInventory - foodItem.amountReserved - item.amount >= 0;
+        if (!itemsAvailable) {
+          setInventoryAvailable(false);
+          useErrorAlert(
+            `There is not enough ${item.name} in the inventory to complete this transaction`
+          );
+        } else {
+          foodItem.amountReserved -= item.amount;
+        }
+        return foodItem;
+      } else {
+        useErrorAlert(
+          `${item.name} id has changed from when this user reserved it`
+        );
+        return;
+      }
+    },
+    function (error, committed, snapshot) {
+      if (error) {
+        useErrorAlert(`Error reserving ${item.name} |  ${error}`);
+        setStartOrder(false);
+        setOrderComplete(true);
+      } else if (!committed) {
+        setNameOfItemUnavailable(item.name);
+        /*
+        setStartOrder(false);
+        setOrderComplete(true);*/
+/*
+      } else if (committed) {
+        setUnprocessedItems((prevAmount) => prevAmount - 1);
+      }
+      if (item.id === itemsInCart[itemsInCart.length - 1].id) {
+        setVisitedAllItems(true);
+      }
+    }
+  );
+}
+
+*/

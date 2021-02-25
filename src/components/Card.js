@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { ListGroup, Modal } from "react-bootstrap";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, CheckOutlined } from "@ant-design/icons";
 import EditModal from "./EditModal";
 import ItemInfo from "./ItemInfo";
 import OrderInfo from "./OrderInfo";
 import ItemImage from "./ItemImage";
+import ConfirmDeliveredModal from "./ConfirmDeliveredModal";
 
 export default function Card({ tabKey, currentItem, order }) {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   function closeModal() {
-    setModalOpen(false);
+    setEditModalOpen(false);
+    setConfirmModalOpen(false);
   }
 
   return (
@@ -30,19 +33,30 @@ export default function Card({ tabKey, currentItem, order }) {
           </div>
           <div
             className="d-flex align-items-center edit-button"
-            onClick={() => setModalOpen(true)}
+            onClick={() => setEditModalOpen(true)}
           >
             <EditOutlined style={{ fontSize: "50px" }} />
           </div>
+          {tabKey !== "inventory" ? (
+            <div
+              className="d-flex align-items-center checkmark-button"
+              onClick={() => setConfirmModalOpen(true)}
+            >
+              <CheckOutlined style={{ fontSize: "50px" }} />
+            </div>
+          ) : null}
         </div>
       </ListGroup.Item>
-      <Modal show={modalOpen} onHide={closeModal}>
+      <Modal show={editModalOpen} onHide={closeModal}>
         <EditModal
           closeModal={closeModal}
           tabKey={tabKey}
           item={currentItem}
           order={order}
         />
+      </Modal>
+      <Modal show={confirmModalOpen} onHide={closeModal}>
+        <ConfirmDeliveredModal closeModal={closeModal} order={order} />
       </Modal>
     </>
   );

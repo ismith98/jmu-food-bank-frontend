@@ -24,7 +24,13 @@
 }
 
 .edit-button {
-  height: 100px;
+  min-height: 100px;
+  padding-right: 10px;
+}
+
+.checkmark-button {
+  min-height: 100px;
+  padding-left: 10px;
 }
 
 .capitalize {
