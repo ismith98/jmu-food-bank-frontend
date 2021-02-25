@@ -88,7 +88,7 @@ export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
 
 function followUp(itemPromise, itemInfo, setSuccessAlert) {
   console.log(`item Promise: ${itemPromise}`);
-  if (!itemPromise.committedcommitted) {
+  if (!itemPromise.committed) {
     // Item id already exists
     addItemToDatabase(itemInfo);
   } else {
