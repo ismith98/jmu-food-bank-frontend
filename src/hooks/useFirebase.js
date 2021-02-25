@@ -78,12 +78,11 @@ function addItem(itemInfo) {
 
 export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
   addItem(itemInfo)
-    .then((committed, snapshot) =>
-      followUp(committed, snapshot, itemInfo, setErrorAlert, setSuccessAlert)
-    )
-    .catch((error, setErrorAlert) =>
-      setErrorAlert(`Transaction failed abnormally! |  ${error}`)
-    );
+    .then((itemPromise) => followUp(itemPromise, itemInfo, setSuccessAlert))
+    .catch((err, setErrorAlert) => {
+      console.log(err);
+      setErrorAlert(`Transaction failed abnormally! |  ${err.error}`);
+    });
 }
 
 function followUp(itemPromise, itemInfo, setSuccessAlert) {
