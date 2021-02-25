@@ -63,6 +63,19 @@ function sortByTimeOrdered(order1, order2) {
   return 0;
 }
 
+export async function addItemToDatabase(
+  itemInfo,
+  setErrorAlert,
+  setSuccessAlert
+) {
+  try {
+    let result = await addItem(itemInfo);
+    checkItemCommitted(result, itemInfo, setSuccessAlert);
+  } catch (err) {
+    setErrorAlert(`Transaction failed abnormally! |  ${err.error}`);
+  }
+}
+
 function addItem(itemInfo) {
   itemInfo.id = nanoid();
   const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
@@ -76,18 +89,16 @@ function addItem(itemInfo) {
   });
 }
 
-export async function addItemToDatabase(
-  itemInfo,
-  setErrorAlert,
-  setSuccessAlert
-) {
-  try {
-    let itemPromise = await addItem(itemInfo);
-    followUp(itemPromise, itemInfo, setSuccessAlert);
-  } catch (err) {
-    setErrorAlert(`Transaction failed abnormally! |  ${err.error}`);
+function checkItemCommitted(result, itemInfo, setSuccessAlert) {
+  if (result.committed) {
+    setSuccessAlert("Food Item added!");
+  } else {
+    // Item id already exists
+    addItemToDatabase(itemInfo);
   }
+  console.log("Food Item's data: ", result.snapshot.val());
 }
+
 /*
 export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
   addItem(itemInfo)
@@ -98,17 +109,6 @@ export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
     });
 }
 */
-
-function followUp(itemPromise, itemInfo, setSuccessAlert) {
-  console.log(itemPromise);
-  if (!itemPromise.committed) {
-    // Item id already exists
-    addItemToDatabase(itemInfo);
-  } else {
-    setSuccessAlert("Food Item added!");
-  }
-  console.log("Food Item's data: ", itemPromise.snapshot.val());
-}
 
 export function updateItem(itemInfo, setErrorAlert, setSuccessAlert) {
   const itemRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
