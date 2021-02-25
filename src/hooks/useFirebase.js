@@ -76,6 +76,19 @@ function addItem(itemInfo) {
   });
 }
 
+export async function addItemToDatabase(
+  itemInfo,
+  setErrorAlert,
+  setSuccessAlert
+) {
+  try {
+    let itemPromise = await addItem(itemInfo);
+    followUp(itemPromise, itemInfo, setSuccessAlert);
+  } catch (err) {
+    setErrorAlert(`Transaction failed abnormally! |  ${err.error}`);
+  }
+}
+/*
 export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
   addItem(itemInfo)
     .then((itemPromise) => followUp(itemPromise, itemInfo, setSuccessAlert))
@@ -84,6 +97,7 @@ export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
       setErrorAlert(`Transaction failed abnormally! |  ${err.error}`);
     });
 }
+*/
 
 function followUp(itemPromise, itemInfo, setSuccessAlert) {
   console.log(itemPromise);
