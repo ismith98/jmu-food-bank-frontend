@@ -77,29 +77,17 @@ function addItem(itemInfo) {
 }
 
 export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
-  addItem(itemInfo).then((error, committed, snapshot) =>
-    followUp(
-      error,
-      committed,
-      snapshot,
-      itemInfo,
-      setErrorAlert,
-      setSuccessAlert
+  addItem(itemInfo)
+    .then((committed, snapshot) =>
+      followUp(committed, snapshot, itemInfo, setErrorAlert, setSuccessAlert)
     )
-  );
+    .catch((error, setErrorAlert) =>
+      setErrorAlert(`Transaction failed abnormally! |  ${error}`)
+    );
 }
 
-function followUp(
-  error,
-  committed,
-  snapshot,
-  itemInfo,
-  setErrorAlert,
-  setSuccessAlert
-) {
-  if (error) {
-    setErrorAlert(`Transaction failed abnormally! |  ${error}`);
-  } else if (!committed) {
+function followUp(committed, snapshot, itemInfo, setSuccessAlert) {
+  if (!committed) {
     // Item id already exists
     addItemToDatabase(itemInfo);
   } else {
