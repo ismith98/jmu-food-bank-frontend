@@ -86,15 +86,15 @@ export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
     );
 }
 
-function followUp(committed, snapshot, itemInfo, setSuccessAlert) {
-  console.log(`committed: ${committed}; snapshot: ${snapshot}`);
-  if (!committed) {
+function followUp(itemPromise, itemInfo, setSuccessAlert) {
+  console.log(`item Promise: ${itemPromise}`);
+  if (!itemPromise.committedcommitted) {
     // Item id already exists
     addItemToDatabase(itemInfo);
   } else {
     setSuccessAlert("Food Item added!");
   }
-  console.log("Food Item's data: ", snapshot.val());
+  console.log("Food Item's data: ", itemPromise.snapshot.val());
 }
 
 export function updateItem(itemInfo, setErrorAlert, setSuccessAlert) {
