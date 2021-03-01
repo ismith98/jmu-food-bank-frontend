@@ -1,11 +1,15 @@
 import React from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import OrderInfo from "./OrderInfo";
+import { useAlert } from "../contexts/AlertContext";
+import { orderDelivered } from "../hooks/useFirebase";
 
 export default function ConfirmDeliveredModal({ closeModal, order }) {
+  const { setErrorAlert, setSuccessAlert } = useAlert();
+
   function confirmOrderDelivered(e) {
     e.preventDefault();
-    console.log(true);
+    orderDelivered(order, setErrorAlert, setSuccessAlert);
     closeModal();
   }
 

@@ -126,60 +126,77 @@ export function removeFromDatabase(path, id, setErrorAlert, setSuccessAlert) {
     .catch((error) => setErrorAlert("Remove Failed: " + error.message));
 }
 
-/*
-export function orderDelivered(order, setInventoryAvailable) {
-  order.itemsInCart.forEach((item) =>
-    checkInventoryForOneItem(item, setInventoryAvailable)
-  );
-}
+export async function orderDelivered(order, setErrorAlert, setSuccessAlert) {
+  //try {
+  let results = await Promise.all(
+    order.itemsInCart.map(async (item) => {
+      //return { promise: await checkInventoryForOneItem(item), name: item.name };
 
-function checkInventoryForOneItem(
-  item,
-  setInventoryAvailable,
-  setVisitedAllItems
-) {
-  const foodItemsRef = firebase.database().ref(`foodItems/${item.id}/`);
-  foodItemsRef.transaction(
-    (foodItem) => {
-      if (foodItem) {
-        console.log(foodItem);
-        let itemsAvailable =
-          foodItem.totalInventory - foodItem.amountReserved - item.amount >= 0;
-        if (!itemsAvailable) {
-          setInventoryAvailable(false);
-          useErrorAlert(
-            `There is not enough ${item.name} in the inventory to complete this transaction`
-          );
-        } else {
-          foodItem.amountReserved -= item.amount;
+      /*
+      let res = checkInventoryForOneItem(item).catch((e) => {
+        console.log("inside err");
+        return { committed: false, name: item.name };
+      });
+      return res;
+      */
+
+      try {
+        return {
+          promise: await checkInventoryForOneItem(item),
+          name: item.name,
+        };
+      } catch (e) {
+        if (e.message === "Item unavailable") {
+          console.log("item unavail");
+        } else if (e.message === "Item deleted") {
+          console.log("item deleted");
         }
-        return foodItem;
-      } else {
-        useErrorAlert(
-          `${item.name} id has changed from when this user reserved it`
-        );
-        return;
+        return { promise: { committed: false }, name: item.name };
+
+        //return { committed: false, name: item.name };
       }
-    },
-    function (error, committed, snapshot) {
-      if (error) {
-        useErrorAlert(`Error reserving ${item.name} |  ${error}`);
-        setStartOrder(false);
-        setOrderComplete(true);
-      } else if (!committed) {
-        setNameOfItemUnavailable(item.name);
-        /*
-        setStartOrder(false);
-        setOrderComplete(true);*/
-/*
-      } else if (committed) {
-        setUnprocessedItems((prevAmount) => prevAmount - 1);
-      }
-      if (item.id === itemsInCart[itemsInCart.length - 1].id) {
-        setVisitedAllItems(true);
-      }
-    }
+    })
   );
+  console.log(results);
+  let unavailableItems = results
+    .filter((result) => checkAvailability(result))
+    .map((result) => getName(result));
+  console.log(unavailableItems);
+  if (unavailableItems.length > 0) {
+    setErrorAlert(`Error reserving ${unavailableItems.join()} `);
+  } else {
+    setSuccessAlert(`Order Delivered`);
+  }
+  /*} catch (e) {
+    //setErrorAlert(`Error ${e.error}`);
+    console.log("error was caught");
+  }*/
 }
 
-*/
+async function checkInventoryForOneItem(item) {
+  const foodItemsRef = firebase.database().ref(`foodItems/${item.id}/`);
+  return foodItemsRef.transaction((foodItem) => {
+    if (foodItem) {
+      console.log(foodItem);
+      let itemsAvailable = foodItem.totalInventory - item.amount >= 0; //Change to inventory available eventaully
+      if (itemsAvailable) {
+        foodItem.totalInventory -= item.amount;
+        foodItem.amountReserved -= item.amount;
+        return foodItem;
+      }
+      throw new Error("Item unavailable");
+      //return; // abort the transaction
+    } else {
+      throw new Error("Item deleted");
+    }
+  });
+}
+
+function checkAvailability(result) {
+  return !result.promise.committed;
+}
+
+function getName(result) {
+  console.log(result.name);
+  return result.name;
+}
