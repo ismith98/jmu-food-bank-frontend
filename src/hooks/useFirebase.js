@@ -1,9 +1,9 @@
 import firebase from "../firebase";
 import { nanoid } from "nanoid";
 
-export function getItems(setLoading, setItems) {
+export function getItems(setLoading, setItems, id = "") {
   setLoading(true);
-  const foodItemsRef = firebase.database().ref("foodItems/");
+  const foodItemsRef = firebase.database().ref(`foodItems/${id}`);
   foodItemsRef.on("value", (snapshot) => {
     let value = snapshot.val();
     if (value !== null) {
@@ -31,9 +31,9 @@ function sortByName(item1, item2) {
   return 0;
 }
 
-export function getOrders(/*setLoading,*/ setOrders) {
+export function getOrders(setOrders, orderId = "") {
   //setLoading(true);
-  const ordersRef = firebase.database().ref("orders/");
+  const ordersRef = firebase.database().ref(`orders/${orderId}`);
   ordersRef.on("value", (snapshot) => {
     let value = snapshot.val();
     if (value !== null) {
@@ -44,6 +44,7 @@ export function getOrders(/*setLoading,*/ setOrders) {
       setOrders(sortedOrders);
       //setFilteredFoodItems(foodItems);
       console.log(sortedOrders);
+      return orders;
     }
     //setLoading(false);
   });
@@ -110,9 +111,9 @@ export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
 }
 */
 
-export function updateItem(itemInfo, setErrorAlert, setSuccessAlert) {
+export async function updateItem(itemInfo, setErrorAlert, setSuccessAlert) {
   const itemRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
-  itemRef
+  return itemRef
     .update(itemInfo)
     .then(() => setSuccessAlert("Update succeeded."))
     .catch((error) => setErrorAlert("Update failed: " + error.message));
@@ -163,9 +164,11 @@ export async function orderDelivered(order, setErrorAlert, setSuccessAlert) {
     .map((result) => getName(result));
   console.log(unavailableItems);
   if (unavailableItems.length > 0) {
-    setErrorAlert(`Error reserving ${unavailableItems.join()} `);
+    setErrorAlert(`Error reserving ${unavailableItems.join()}`);
+    return `Error reserving ${unavailableItems.join()}`;
   } else {
     setSuccessAlert(`Order Delivered`);
+    return `Order Delivered`;
   }
   /*} catch (e) {
     //setErrorAlert(`Error ${e.error}`);

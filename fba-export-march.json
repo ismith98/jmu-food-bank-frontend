@@ -1,0 +1,342 @@
+{
+  "foodItems": {
+    "0": {
+      "amountReserved": 5,
+      "id": 0,
+      "imageUrl": "https://i.imgur.com/c0JWUxd.jpg",
+      "maxReservable": 5,
+      "name": "bread",
+      "totalInventory": 23
+    },
+    "1": {
+      "amountReserved": 5,
+      "id": 1,
+      "imageUrl": "https://i.imgur.com/8ImQ9Uz.jpg",
+      "maxReservable": 3,
+      "name": "eggs",
+      "totalInventory": 21
+    },
+    "2": {
+      "amountReserved": 1,
+      "id": 2,
+      "imageUrl": "https://i.imgur.com/nHLAnOQ.jpg",
+      "maxReservable": 5,
+      "name": "soup",
+      "totalInventory": 15
+    },
+    "3": {
+      "amountReserved": 0,
+      "id": 3,
+      "imageUrl": "https://i.imgur.com/pRTxIR3.jpg",
+      "maxReservable": 3,
+      "name": "fresh peas",
+      "totalInventory": 13
+    },
+    "8": {
+      "amountReserved": 0,
+      "id": 8,
+      "imageUrl": "https://i.imgur.com/9MjQfvp.jpg",
+      "maxReservable": 5,
+      "name": "Baked Beans",
+      "totalInventory": 14
+    },
+    "9": {
+      "amountReserved": 0,
+      "id": 9,
+      "imageUrl": "https://i.imgur.com/IJUX53D.jpg",
+      "maxReservable": 5,
+      "name": "Canned Chicken",
+      "totalInventory": 10
+    },
+    "10": {
+      "amountReserved": 1,
+      "id": 10,
+      "imageUrl": "https://i.imgur.com/UBvJ9xy.jpg",
+      "maxReservable": 3,
+      "name": "tuna",
+      "totalInventory": 7
+    },
+    "11": {
+      "amountReserved": 1,
+      "id": 11,
+      "imageUrl": "https://i.imgur.com/uo5cv4q.jpg",
+      "maxReservable": 4,
+      "name": "Spam",
+      "totalInventory": 12
+    },
+    "12": {
+      "amountReserved": 1,
+      "id": 12,
+      "imageUrl": "https://i.imgur.com/YgTy06O.jpg",
+      "maxReservable": 4,
+      "name": "canned vegetables",
+      "totalInventory": 13
+    },
+    "13": {
+      "amountReserved": 0,
+      "id": 13,
+      "imageUrl": "https://i.imgur.com/EPzB0Sj.jpg",
+      "maxReservable": 5,
+      "name": "canola oil",
+      "totalInventory": 1
+    },
+    "14": {
+      "amountReserved": 0,
+      "id": 14,
+      "imageUrl": "https://i.imgur.com/ARaLGQS.jpg",
+      "maxReservable": 3,
+      "name": "Crackers",
+      "totalInventory": 15
+    },
+    "15": {
+      "amountReserved": 1,
+      "id": 15,
+      "imageUrl": "https://i.imgur.com/wVVEYc0.jpg",
+      "maxReservable": 4,
+      "name": "granola bar",
+      "totalInventory": 5
+    },
+    "16": {
+      "amountReserved": 3,
+      "id": 16,
+      "imageUrl": "https://i.imgur.com/7FDw743.jpg",
+      "maxReservable": 5,
+      "name": "Penne Pasta",
+      "totalInventory": 12
+    },
+    "X96zD40jCT6KZnLOg2GcI": {
+      "amountReserved": 12,
+      "id": "X96zD40jCT6KZnLOg2GcI",
+      "imageUrl": "https://i.imgur.com/hXQDHQc.jpg",
+      "maxReservable": 5,
+      "name": "Apple",
+      "totalInventory": 3
+    }
+  },
+  "orders": {
+    "Bumpy-Yaks-Whisper": {
+      "itemsInCart": [
+        {
+          "amount": 1,
+          "id": 7,
+          "imageUrl": "https://i.imgur.com/E1Wt4ur.jpg",
+          "name": "Applesauce",
+          "startingAmount": 15
+        }
+      ],
+      "orderId": "Bumpy-Yaks-Whisper",
+      "pickupTime": "Mon Feb 08 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Wed Feb 03 2021 15:26:16 GMT-0500 (EST)"
+    },
+    "Chilly-Vans-Mix": {
+      "itemsInCart": [
+        {
+          "amount": 2,
+          "id": 7,
+          "imageUrl": "https://i.imgur.com/E1Wt4ur.jpg",
+          "name": "Applesauce",
+          "startingAmount": 14
+        }
+      ],
+      "orderId": "Chilly-Vans-Mix",
+      "pickupTime": "Wed Feb 17 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Tue Feb 16 2021 13:30:56 GMT-0500 (EST)"
+    },
+    "Clever-Apes-Behave": {
+      "itemsInCart": [
+        {
+          "amount": 1,
+          "id": 0,
+          "imageUrl": "https://i.imgur.com/c0JWUxd.jpg",
+          "name": "bread",
+          "startingAmount": 19
+        },
+        {
+          "amount": 1,
+          "id": 1,
+          "imageUrl": "https://i.imgur.com/8ImQ9Uz.jpg",
+          "name": "eggs",
+          "startingAmount": 17
+        },
+        {
+          "amount": 3,
+          "id": "X96zD40jCT6KZnLOg2GcI",
+          "imageUrl": "https://i.imgur.com/hXQDHQc.jpg",
+          "name": "Apple",
+          "startingAmount": 3
+        },
+        {
+          "amount": 1,
+          "id": 2,
+          "imageUrl": "https://i.imgur.com/nHLAnOQ.jpg",
+          "name": "soup",
+          "startingAmount": 15
+        }
+      ],
+      "orderId": "Clever-Apes-Behave",
+      "pickupTime": "Mon Mar 01 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Mon Mar 01 2021 00:06:36 GMT-0500 (EST)"
+    },
+    "Cute-Rabbits-Fly": {
+      "itemsInCart": [
+        {
+          "amount": 5,
+          "id": "GT0qi0GpuQenQu18vbsio",
+          "imageUrl": "https://i.imgur.com/eSEAWUg.jpg",
+          "name": "Peaches",
+          "startingAmount": 43
+        }
+      ],
+      "orderId": "Cute-Rabbits-Fly",
+      "pickupTime": "Wed Feb 17 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Tue Feb 16 2021 16:48:31 GMT-0500 (EST)"
+    },
+    "Dry-Rats-Add": {
+      "itemsInCart": [
+        {
+          "amount": 1,
+          "id": 3,
+          "imageUrl": "https://i.imgur.com/pRTxIR3.jpg",
+          "name": "fresh peas",
+          "startingAmount": 17
+        }
+      ],
+      "orderId": "Dry-Rats-Add",
+      "pickupTime": "Mon Jan 18 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Fri Jan 15 2021 19:16:35 GMT-0500 (EST)"
+    },
+    "Every-Badgers-Listen": {
+      "itemsInCart": [
+        {
+          "amount": 1,
+          "id": "X96zD40jCT6KZnLOg2GcI",
+          "imageUrl": "https://i.imgur.com/hXQDHQc.jpg",
+          "name": "Apple",
+          "startingAmount": 10
+        }
+      ],
+      "orderId": "Every-Badgers-Listen",
+      "pickupTime": "Mon Mar 01 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Sun Feb 28 2021 19:21:40 GMT-0500 (EST)"
+    },
+    "Famous-Angaroos-Behave": {
+      "itemsInCart": [
+        {
+          "amount": 1,
+          "id": 0,
+          "imageUrl": "https://i.imgur.com/c0JWUxd.jpg",
+          "name": "bread",
+          "startingAmount": 25
+        },
+        {
+          "amount": 1,
+          "id": 1,
+          "imageUrl": "https://i.imgur.com/8ImQ9Uz.jpg",
+          "name": "eggs",
+          "startingAmount": 22
+        },
+        {
+          "amount": 1,
+          "id": 2,
+          "imageUrl": "https://i.imgur.com/nHLAnOQ.jpg",
+          "name": "soup",
+          "startingAmount": 20
+        },
+        {
+          "amount": 1,
+          "id": 15,
+          "imageUrl": "https://i.imgur.com/wVVEYc0.jpg",
+          "name": "granola bar",
+          "startingAmount": 5
+        },
+        {
+          "amount": 1,
+          "id": 16,
+          "imageUrl": "https://i.imgur.com/7FDw743.jpg",
+          "name": "Penne Pasta",
+          "startingAmount": 10
+        }
+      ],
+      "orderId": "Famous-Angaroos-Behave",
+      "pickupTime": "Wed Feb 24 2021 12:30:00 GMT-0500 (EST)",
+      "timeOrdered": "Sat Feb 13 2021 20:27:57 GMT-0500 (EST)"
+    },
+    "Gold-Oranges-Attack": {
+      "itemsInCart": [
+        {
+          "amount": 10,
+          "id": "X96zD40jCT6KZnLOg2GcI",
+          "imageUrl": "https://i.imgur.com/hXQDHQc.jpg",
+          "name": "Apple",
+          "startingAmount": 8
+        }
+      ],
+      "orderId": "Gold-Oranges-Attack",
+      "pickupTime": "Mon Mar 01 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Sun Feb 28 2021 19:22:08 GMT-0500 (EST)"
+    },
+    "Modern-Numbers-Explain": {
+      "itemsInCart": [
+        {
+          "amount": 4,
+          "id": 2,
+          "imageUrl": "https://i.imgur.com/nHLAnOQ.jpg",
+          "name": "soup",
+          "startingAmount": 19
+        },
+        {
+          "amount": 3,
+          "id": 3,
+          "imageUrl": "https://i.imgur.com/pRTxIR3.jpg",
+          "name": "fresh peas",
+          "startingAmount": 16
+        }
+      ],
+      "orderId": "Modern-Numbers-Explain",
+      "pickupTime": "Wed Feb 17 2021 14:15:00 GMT-0500 (EST)",
+      "timeOrdered": "Tue Feb 16 2021 09:10:33 GMT-0500 (EST)"
+    },
+    "Plenty-Ads-Leave": {
+      "itemsInCart": [
+        {
+          "amount": 2,
+          "id": 7,
+          "imageUrl": "https://i.imgur.com/E1Wt4ur.jpg",
+          "name": "Applesauce",
+          "startingAmount": 12
+        }
+      ],
+      "orderId": "Plenty-Ads-Leave",
+      "pickupTime": "Wed Feb 17 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Tue Feb 16 2021 13:37:20 GMT-0500 (EST)"
+    },
+    "Rich-Goats-Lay": {
+      "itemsInCart": [
+        {
+          "amount": 1,
+          "id": 7,
+          "imageUrl": "https://i.imgur.com/E1Wt4ur.jpg",
+          "name": "Applesauce",
+          "startingAmount": 16
+        }
+      ],
+      "orderId": "Rich-Goats-Lay",
+      "pickupTime": "Mon Feb 08 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Wed Feb 03 2021 15:15:52 GMT-0500 (EST)"
+    },
+    "Witty-Candles-Work": {
+      "itemsInCart": [
+        {
+          "amount": 1,
+          "id": "X96zD40jCT6KZnLOg2GcI",
+          "imageUrl": "https://i.imgur.com/hXQDHQc.jpg",
+          "name": "Apple",
+          "startingAmount": 9
+        }
+      ],
+      "orderId": "Witty-Candles-Work",
+      "pickupTime": "Mon Mar 01 2021 12:00:00 GMT-0500 (EST)",
+      "timeOrdered": "Sun Feb 28 2021 19:21:49 GMT-0500 (EST)"
+    }
+  }
+}
