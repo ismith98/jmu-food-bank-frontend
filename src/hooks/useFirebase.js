@@ -133,6 +133,7 @@ export function removeFromDatabase(
 export async function orderDelivered(order, setErrorAlert, setSuccessAlert) {
   try {
     await checkInventoryForItems(order.itemsInCart);
+    addToCompletedOrders(order, setErrorAlert);
     setSuccessAlert(`Order Delivered`);
   } catch (e) {
     setErrorAlert(e.message);
@@ -166,4 +167,17 @@ async function checkInventoryForItems(itemsInCart) {
 
     return Object.assign(foodItems, ...updatedItems);
   });
+}
+
+export async function addToCompletedOrders(order, setErrorAlert) {
+  const completedOrdersRef = firebase
+    .database()
+    .ref(`completedOrders/${order.orderId}`);
+
+  try {
+    await completedOrdersRef.update(order);
+    removeFromDatabase("orders", order.orderId, setErrorAlert);
+  } catch (error) {
+    setErrorAlert("Failed to add this order to list of completed orders");
+  }
 }
