@@ -27,8 +27,12 @@ export default function EditItemForm({ item, closeModal }) {
       id: itemId,
       totalInventory: Number(totalInventory),
       maxReservable: Number(maxReservable),
+      amountReserved: amountReserved,
+      imageUrl: item.imageUrl,
     };
-    updateItem(itemInfo, setErrorAlert, setSuccessAlert);
+    let oldId = item.id;
+    let path = "foodItems";
+    updateItem(path, itemInfo, oldId, setErrorAlert, setSuccessAlert);
     closeModal();
   }
 
