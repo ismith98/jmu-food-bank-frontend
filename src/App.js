@@ -2,6 +2,7 @@ import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import List from "./components/List";
 import { AlertProvider } from "./contexts/AlertContext";
+import { CategoriesProvider } from "./contexts/CategoriesContext";
 
 function App() {
   return (
@@ -9,7 +10,9 @@ function App() {
       <header className="App-header">
         <h1>JMU Pop-up Pantry Inventory</h1>
         <AlertProvider>
-          <List />
+          <CategoriesProvider>
+            <List />
+          </CategoriesProvider>
         </AlertProvider>
       </header>
     </div>

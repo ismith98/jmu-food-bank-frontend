@@ -64,6 +64,13 @@ function sortByTimeOrdered(order1, order2) {
   return 0;
 }
 
+export function getCategories(setCategories) {
+  const ordersRef = firebase.database().ref(`categories/`);
+  ordersRef.once("value", (snapshot) => {
+    setCategories(snapshot.val());
+  });
+}
+
 export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
   itemInfo.id = nanoid();
   const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
