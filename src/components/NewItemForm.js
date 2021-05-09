@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
+import Select from "react-select";
 //import { useDatabase } from "../contexts/DatabaseContext";
 //import firebase from "../firebase";
 import { useAlert } from "../contexts/AlertContext";
@@ -10,6 +11,23 @@ export default function NewItemForm({ closeModal }) {
   const [totalInventory, setTotalInventory] = useState(10);
   const [maxReservable, setMaxReservable] = useState(5);
   const [picture, setPicture] = useState();
+  const [selectedOption, setSelectedOption] = useState({
+    value: "Canned Fruit",
+    label: "Canned Fruit",
+  });
+
+  const options = [
+    { value: "Beverages", label: "Beverages" },
+    { value: "Breakfast Foods", label: "Breakfast Foods" },
+    { value: "Canned Fruit", label: "Canned Fruit" },
+    { value: "Canned Italian/Sauce", label: "Canned Italian/Sauce" },
+    { value: "Canned Meat and Fish", label: "Canned Meat and Fish" },
+    { value: "Canned Vegetables", label: "Canned Vegetables" },
+    { value: "Dry Goods", label: "Dry Goods" },
+    { value: "Frozen Foods", label: "Frozen Foods" },
+    { value: "Fresh Produce", label: "Fresh Produce" },
+    { value: "Soups", label: "Soups" },
+  ];
 
   const { setErrorAlert, setSuccessAlert } = useAlert();
 
@@ -51,6 +69,7 @@ export default function NewItemForm({ closeModal }) {
             maxReservable: Number(maxReservable),
             amountReserved: 0,
             imageUrl: imageUrl,
+            categories: selectedOption.label,
           };
           addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert);
         }
@@ -97,6 +116,18 @@ export default function NewItemForm({ closeModal }) {
             type="number"
             required
             onChange={(e) => setMaxReservable(e.target.value)}
+          />
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} controlId="categories">
+        <Form.Label column sm="4">
+          Categories
+        </Form.Label>
+        <Col sm="8">
+          <Select
+            value={selectedOption}
+            onChange={(option) => setSelectedOption(option)}
+            options={options}
           />
         </Col>
       </Form.Group>

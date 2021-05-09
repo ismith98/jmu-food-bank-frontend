@@ -64,43 +64,31 @@ function sortByTimeOrdered(order1, order2) {
   return 0;
 }
 
-export async function addItemToDatabase(
-  itemInfo,
-  setErrorAlert,
-  setSuccessAlert
-) {
-  try {
-    let result = await addItem(itemInfo);
-    checkItemCommitted(result, itemInfo, setSuccessAlert);
-  } catch (err) {
-    setErrorAlert(`Transaction failed abnormally! |  ${err.error}`);
-  }
-}
-
-function addItem(itemInfo) {
+export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
   itemInfo.id = nanoid();
   const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
-  return foodItemsRef.transaction((currentData) => {
-    if (currentData === null) {
-      return itemInfo;
-    } else {
-      //Item Id already exists
-      return; //Abort the transaction
+  foodItemsRef.transaction(
+    (currentData) => {
+      if (currentData === null) {
+        return itemInfo;
+      } else {
+        //Item Id already exists
+        return; //Abort the transaction
+      }
+    },
+    (error, committed, snapshot) => {
+      if (error) setErrorAlert(`Transaction failed abnormally! |  ${error}`);
+      else if (committed) setSuccessAlert("Food Item added!");
+      else {
+        // Item id already exists
+        addItemToDatabase(itemInfo);
+      }
+      console.log("Food Item's data: ", snapshot.val());
     }
-  });
+  );
 }
 
-function checkItemCommitted(result, itemInfo, setSuccessAlert) {
-  if (result.committed) {
-    setSuccessAlert("Food Item added!");
-  } else {
-    // Item id already exists
-    addItemToDatabase(itemInfo);
-  }
-  console.log("Food Item's data: ", result.snapshot.val());
-}
-
-export async function updateItem(
+export function updateItem(
   path,
   itemInfo,
   oldId,
@@ -108,13 +96,13 @@ export async function updateItem(
   setSuccessAlert
 ) {
   const itemRef = firebase.database().ref(`${path}/${itemInfo.id}`);
-  try {
-    await itemRef.update(itemInfo);
-    if (itemInfo.id !== oldId) removeFromDatabase(path, oldId, setErrorAlert);
-    setSuccessAlert("Update Successful");
-  } catch (error) {
-    setErrorAlert("Update failed: " + error.message);
-  }
+  itemRef
+    .update(itemInfo)
+    .then(() => {
+      if (itemInfo.id !== oldId) removeFromDatabase(path, oldId, setErrorAlert);
+    })
+    .then(() => setSuccessAlert("Update Successful"))
+    .catch((error) => setErrorAlert("Update failed: " + error));
 }
 
 export function removeFromDatabase(
@@ -144,28 +132,30 @@ async function checkInventoryForItems(itemsInCart) {
   const foodItemsRef = firebase.database().ref(`foodItems/`);
 
   return foodItemsRef.transaction((foodItems) => {
-    let updatedItems = itemsInCart.map((oneItemFromCart) => {
-      let foodItem = foodItems[oneItemFromCart.id];
+    if (foodItems) {
+      let updatedItems = itemsInCart.map((oneItemFromCart) => {
+        let foodItem = foodItems[oneItemFromCart.id];
 
-      if (foodItem) {
-        let itemsAvailable =
-          foodItem.totalInventory - oneItemFromCart.amount >= 0; //Change to inventory available eventaully
+        if (foodItem) {
+          let itemsAvailable =
+            foodItem.totalInventory - oneItemFromCart.amount >= 0; //Change to inventory available eventaully
 
-        if (itemsAvailable) {
-          foodItem.totalInventory -= oneItemFromCart.amount;
-          foodItem.amountReserved -= oneItemFromCart.amount;
-          let id = oneItemFromCart.id;
-          return { [id]: foodItem };
+          if (itemsAvailable) {
+            foodItem.totalInventory -= oneItemFromCart.amount;
+            foodItem.amountReserved -= oneItemFromCart.amount;
+            let id = oneItemFromCart.id;
+            return { [id]: foodItem };
+          }
+          throw new Error(`Not enough ${foodItem.name}(s) available`);
+        } else {
+          throw new Error(
+            `${oneItemFromCart.name} deleted. Visit *link w/ instructions* to resolve this issue`
+          );
         }
-        throw new Error(`Not enough ${foodItem.name}(s) available`);
-      } else {
-        throw new Error(
-          `${oneItemFromCart.name} deleted. Visit *link w/ instructions* to resolve this issue`
-        );
-      }
-    });
+      });
 
-    return Object.assign(foodItems, ...updatedItems);
+      return Object.assign(foodItems, ...updatedItems);
+    }
   });
 }
 
