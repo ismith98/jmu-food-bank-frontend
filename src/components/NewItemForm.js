@@ -55,7 +55,7 @@ export default function NewItemForm({ closeModal }) {
             maxReservable: Number(maxReservable),
             amountReserved: 0,
             imageUrl: imageUrl,
-            categories: selectedCategory.label,
+            category: selectedCategory.label,
           };
           addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert);
         }
