@@ -65,7 +65,7 @@ function sortByTimeOrdered(order1, order2) {
 }
 
 export function getCategories(setCategories) {
-  const categoriesRef = firebase.database().ref(`categories/`);
+  const categoriesRef = firebase.database().ref(`app/categories/`);
   categoriesRef.once("value", (snapshot) => {
     setCategories(snapshot.val());
   });
