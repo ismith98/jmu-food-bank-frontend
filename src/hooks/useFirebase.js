@@ -3,14 +3,14 @@ import { nanoid } from "nanoid";
 
 export function getItems(setLoading, setItems, id = "") {
   setLoading(true);
-  const foodItemsRef = firebase.database().ref(`foodItems/${id}`);
-  foodItemsRef.on("value", (snapshot) => {
+  const pantryItemsRef = firebase.database().ref(`app/pantryItems/${id}`);
+  pantryItemsRef.on("value", (snapshot) => {
     let value = snapshot.val();
     if (value !== null) {
       let items = Object.values(value);
       let sortedItems = items.sort((item1, item2) => sortByName(item1, item2));
       setItems(sortedItems);
-      //setFilteredFoodItems(sortedItems); -> Filter items before sorting
+      //setFilteredpantryItems(sortedItems); -> Filter items before sorting
       console.log(sortedItems);
     }
     setLoading(false);
@@ -42,7 +42,7 @@ export function getOrders(setOrders, orderId = "") {
         sortByTimeOrdered(order1, order2)
       );
       setOrders(sortedOrders);
-      //setFilteredFoodItems(foodItems);
+      //setFilteredpantryItems(pantryItems);
       console.log(sortedOrders);
       return orders;
     }
@@ -65,16 +65,18 @@ function sortByTimeOrdered(order1, order2) {
 }
 
 export function getCategories(setCategories) {
-  const ordersRef = firebase.database().ref(`categories/`);
-  ordersRef.once("value", (snapshot) => {
+  const categoriesRef = firebase.database().ref(`categories/`);
+  categoriesRef.once("value", (snapshot) => {
     setCategories(snapshot.val());
   });
 }
 
 export function addItemToDatabase(itemInfo, setErrorAlert, setSuccessAlert) {
   itemInfo.id = nanoid();
-  const foodItemsRef = firebase.database().ref(`foodItems/${itemInfo.id}`);
-  foodItemsRef.transaction(
+  const pantryItemsRef = firebase
+    .database()
+    .ref(`app/pantryItems/${itemInfo.id}`);
+  pantryItemsRef.transaction(
     (currentData) => {
       if (currentData === null) {
         return itemInfo;
@@ -133,26 +135,26 @@ export function removeFromDatabase(
 }
 
 export function orderDelivered(order, setErrorAlert, setSuccessAlert) {
-  const foodItemsRef = firebase.database().ref(`foodItems/`);
+  const pantryItemsRef = firebase.database().ref(`app/pantryItems/`);
 
-  return foodItemsRef.transaction(
-    (foodItems) => {
+  return pantryItemsRef.transaction(
+    (pantryItems) => {
       try {
-        if (foodItems) {
+        if (pantryItems) {
           let updatedItems = order.itemsInCart.map((oneItemFromCart) => {
-            let foodItem = foodItems[oneItemFromCart.id];
+            let pantryItem = pantryItems[oneItemFromCart.id];
 
-            if (foodItem) {
+            if (pantryItem) {
               let itemsAvailable =
-                foodItem.totalInventory - oneItemFromCart.amount >= 0; //Change to inventory available eventaully
+                pantryItem.totalInventory - oneItemFromCart.amount >= 0; //Change to inventory available eventaully
 
               if (itemsAvailable) {
-                foodItem.totalInventory -= oneItemFromCart.amount;
-                foodItem.amountReserved -= oneItemFromCart.amount;
+                pantryItem.totalInventory -= oneItemFromCart.amount;
+                pantryItem.amountReserved -= oneItemFromCart.amount;
                 let id = oneItemFromCart.id;
-                return { [id]: foodItem };
+                return { [id]: pantryItem };
               }
-              throw new Error(`Not enough ${foodItem.name}(s) available`);
+              throw new Error(`Not enough ${pantryItem.name}(s) available`);
             } else {
               throw new Error(
                 `${oneItemFromCart.name} deleted. Visit *link w/ instructions* to resolve this issue`
@@ -160,7 +162,7 @@ export function orderDelivered(order, setErrorAlert, setSuccessAlert) {
             }
           });
 
-          return Object.assign(foodItems, ...updatedItems);
+          return Object.assign(pantryItems, ...updatedItems);
         }
       } catch (error) {
         setErrorAlert(error.message);

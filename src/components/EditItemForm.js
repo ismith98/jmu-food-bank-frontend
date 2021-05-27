@@ -31,13 +31,13 @@ export default function EditItemForm({ item, closeModal }) {
       imageUrl: item.imageUrl,
     };
     let oldId = item.id;
-    let path = "foodItems";
+    let path = "app/pantryItems";
     updateItem(path, itemInfo, oldId, setErrorAlert, setSuccessAlert);
     closeModal();
   }
 
   function removeItem() {
-    let path = "foodItems";
+    let path = "app/pantryItems";
     removeFromDatabase(path, item.id, setErrorAlert, setSuccessAlert);
     closeModal();
   }
