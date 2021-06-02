@@ -87,6 +87,7 @@ export default function NewItemForm({ closeModal }) {
           <Form.Control
             value={totalInventory}
             type="number"
+            min="0"
             required
             onChange={(e) => setTotalInventory(e.target.value)}
           />
@@ -100,6 +101,7 @@ export default function NewItemForm({ closeModal }) {
           <Form.Control
             value={maxReservable}
             type="number"
+            min="1"
             required
             onChange={(e) => setMaxReservable(e.target.value)}
           />
