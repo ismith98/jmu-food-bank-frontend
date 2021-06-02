@@ -9,19 +9,16 @@ export function useAlert() {
 export function AlertProvider({ children }) {
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState("");
-  const [variant, setVariant] = useState("");
-  const [heading, setHeading] = useState("");
 
   function setErrorAlert(msg) {
-    setVariant("danger");
     setMessage(msg);
     setShowAlert(true);
   }
 
   function setSuccessAlert(msg) {
-    setVariant("success");
-    setHeading(msg);
+    setMessage(msg);
     setShowAlert(true);
+    console.log("success", showAlert);
   }
 
   return (
@@ -31,8 +28,6 @@ export function AlertProvider({ children }) {
         setShowAlert,
         message,
         setErrorAlert,
-        variant,
-        heading,
         setSuccessAlert,
       }}
     >

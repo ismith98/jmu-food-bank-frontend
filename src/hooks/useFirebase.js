@@ -108,12 +108,20 @@ export function updateItem(
   const itemRef = firebase.database().ref(`${path}/${itemInfo.id}`);
   itemRef
     .update(itemInfo, () => {
-      let afterRemove = () => {
+      let updateComplete = () => {
         setSuccessAlert("Update Successful");
         onSuccess();
       };
-      if (itemInfo.id !== oldId)
-        removeFromDatabase(path, oldId, setErrorAlert, () => {}, afterRemove);
+      if (itemInfo.id === oldId) updateComplete();
+      else {
+        removeFromDatabase(
+          path,
+          oldId,
+          setErrorAlert,
+          () => {},
+          updateComplete
+        );
+      }
     })
     .catch((error) => setErrorAlert("Update failed: " + error));
 }
