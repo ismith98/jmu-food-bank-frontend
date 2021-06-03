@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import SystemAlert from "./SystemAlert";
-import ListHeader from "./ListHeader";
+import SystemAlert from "./general/SystemAlert";
+import NewItemButton from "./newItem/NewItemButton";
 import { getItems, getOrders } from "../hooks/useFirebase";
 import { Tabs, Tab } from "react-bootstrap";
-import LoadingIndicator from "./LoadingIndicator";
-import ListMapper from "./ListMapper";
+import LoadingIndicator from "./general/LoadingIndicator";
+import InventoryList from "./inventory/InventoryList";
+import OrdersList from "./orders/OrdersList";
 
 export default function List() {
   const [loading, setLoading] = useState(true);
@@ -24,11 +25,11 @@ export default function List() {
 
   return (
     <div>
-      {/* Context providers for error messages */}
+      {/* Component for System Messages */}
       <SystemAlert />
 
       {/* New Item Button inside of header */}
-      <ListHeader />
+      <NewItemButton />
 
       {loading ? (
         <LoadingIndicator />
@@ -41,10 +42,10 @@ export default function List() {
           style={{ justifyContent: "center" }}
         >
           <Tab eventKey="inventory" title="Inventory">
-            <ListMapper items={items} tabKey={tabKey} />
+            <InventoryList items={items} />
           </Tab>
           <Tab eventKey="orders" title={`Orders (${orders.length})`}>
-            <ListMapper orders={orders} tabKey={tabKey} />
+            <OrdersList orders={orders} />
           </Tab>
         </Tabs>
       )}

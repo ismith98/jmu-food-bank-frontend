@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import Select from "react-select";
-//import { useDatabase } from "../contexts/DatabaseContext";
-//import firebase from "../firebase";
-import { useAlert } from "../contexts/AlertContext";
-import { addItemToDatabase } from "../hooks/useFirebase";
-import { useCategories } from "../contexts/CategoriesContext";
+import { useAlert } from "../../contexts/AlertContext";
+import { addItemToDatabase } from "../../hooks/useFirebase";
+import { useCategories } from "../../contexts/CategoriesContext";
 
 export default function NewItemForm({ closeModal }) {
   const categories = useCategories();

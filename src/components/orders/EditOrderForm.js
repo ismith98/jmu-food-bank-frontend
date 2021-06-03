@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Form, Button, ListGroup } from "react-bootstrap";
-import { removeFromDatabase } from "../hooks/useFirebase";
-import { useAlert } from "../contexts/AlertContext";
+import { removeFromDatabase } from "../../hooks/useFirebase";
+import { useAlert } from "../../contexts/AlertContext";
 import OrderItems from "./OrderItems";
 
 export default function EditOrderForm({ order, closeModal }) {
-  const [items, setItems] = useState(order.itemsInCart);
+  const [itemsInOrder, setItemsInOrder] = useState(order.itemsInCart);
   const { setErrorAlert, setSuccessAlert } = useAlert();
 
   function changeOrder(e) {
@@ -21,8 +21,8 @@ export default function EditOrderForm({ order, closeModal }) {
   return (
     <Form>
       <ListGroup variant="flush">
-        {items.map((item) => (
-          <OrderItems item={item} setItems={setItems} />
+        {itemsInOrder.map((item) => (
+          <OrderItems item={item} setItems={setItemsInOrder} />
         ))}
 
         <Form.Group controlId="changeLog" className="mt-3">

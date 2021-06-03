@@ -1,7 +1,7 @@
 import React from "react";
-import { useAlert } from "../contexts/AlertContext";
+import { useAlert } from "../../contexts/AlertContext";
 import { Modal } from "react-bootstrap";
-import useUpdateLogger from "../hooks/useUpdateLogger";
+import useUpdateLogger from "../../hooks/useUpdateLogger";
 
 export default function SystemAlert() {
   const { showAlert, setShowAlert, message } = useAlert();

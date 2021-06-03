@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import { updateItem, removeFromDatabase } from "../hooks/useFirebase";
-import { useAlert } from "../contexts/AlertContext";
+import { updateItem, removeFromDatabase } from "../../hooks/useFirebase";
+import { useAlert } from "../../contexts/AlertContext";
 
 export default function EditItemForm({ item, closeModal }) {
   const [itemName, setItemName] = useState(item.name);
