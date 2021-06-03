@@ -18,7 +18,7 @@ export default function InventoryCard({ currentItem }) {
         <div className="d-flex flex-row capitalize">
           <ItemImage currentItem={currentItem} />
 
-          <div className="mr-2 ml-2">
+          <div className="mr-2 ml-2 flex-grow-1">
             <ItemInfo currentItem={currentItem} />
           </div>
           <div
