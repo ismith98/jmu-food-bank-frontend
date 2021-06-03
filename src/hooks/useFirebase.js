@@ -1,5 +1,6 @@
 import firebase from "../firebase";
 import { nanoid } from "nanoid";
+import dayjs from "dayjs";
 
 export function getItems(setLoading, setItems, id = "") {
   setLoading(true);
@@ -42,11 +43,8 @@ export function getOrders(setOrders, orderId = "") {
         sortByTimeOrdered(order1, order2)
       );
       setOrders(sortedOrders);
-      //setFilteredpantryItems(pantryItems);
-      console.log(sortedOrders);
       return orders;
     }
-    //setLoading(false);
   });
 }
 
@@ -57,6 +55,35 @@ function sortByTimeOrdered(order1, order2) {
     return -1;
   }
   if (dateA < dateB) {
+    return 1;
+  }
+
+  // dates must be equal
+  return 0;
+}
+
+export function getDeliveredOrders(setDeliveredOrders, orderId = "") {
+  const ordersRef = firebase.database().ref(`deliveredOrders/${orderId}`);
+  ordersRef.on("value", (snapshot) => {
+    let value = snapshot.val();
+    if (value !== null) {
+      let orders = Object.values(value);
+      let sortedOrders = orders.sort((order1, order2) =>
+        sortByTimeDelivered(order1, order2)
+      );
+      setDeliveredOrders(sortedOrders);
+      return orders;
+    }
+  });
+}
+
+function sortByTimeDelivered(order1, order2) {
+  var dateA = new Date(order1.timeDelivered);
+  var dateB = new Date(order2.timeDelivered);
+  if (dateA < dateB) {
+    return -1;
+  }
+  if (dateA > dateB) {
     return 1;
   }
 
@@ -187,9 +214,10 @@ export function orderDelivered(order, setErrorAlert, setSuccessAlert) {
 }
 
 export function addToCompletedOrders(order, setErrorAlert, onSuccess) {
+  order.timeDelivered = dayjs().toDate().toString();
   const completedOrdersRef = firebase
     .database()
-    .ref(`completedOrders/${order.orderId}`);
+    .ref(`deliveredOrders/${order.orderId}`);
 
   completedOrdersRef.update(order, (error) => {
     if (error)

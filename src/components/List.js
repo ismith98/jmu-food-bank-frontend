@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import SystemAlert from "./general/SystemAlert";
 import NewItemButton from "./newItem/NewItemButton";
-import { getItems, getOrders } from "../hooks/useFirebase";
+import { getItems, getOrders, getDeliveredOrders } from "../hooks/useFirebase";
 import { Tabs, Tab } from "react-bootstrap";
 import LoadingIndicator from "./general/LoadingIndicator";
 import InventoryList from "./inventory/InventoryList";
 import OrdersList from "./orders/OrdersList";
+import DeliveredOrdersList from "./deliveredOrders/DeliveredOrdersList";
 
 export default function List() {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [deliveredOrders, setDeliveredOrders] = useState([]);
   const [tabKey, setTabKey] = useState("inventory");
 
   useEffect(() => {
@@ -19,6 +21,7 @@ export default function List() {
     setTimeout(() => {
       getItems(setLoading, setItems);
       getOrders(setOrders);
+      getDeliveredOrders(setDeliveredOrders);
     }, 1000);
     return () => {};
   }, []);
@@ -46,6 +49,9 @@ export default function List() {
           </Tab>
           <Tab eventKey="orders" title={`Orders (${orders.length})`}>
             <OrdersList orders={orders} />
+          </Tab>
+          <Tab eventKey="deliveredOrders" title="Delivered Orders">
+            <DeliveredOrdersList orders={deliveredOrders} />
           </Tab>
         </Tabs>
       )}
