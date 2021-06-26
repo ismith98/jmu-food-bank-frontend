@@ -1,10 +1,10 @@
 import React from "react";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import OrderInfo from "./OrderInfo";
 import { useAlert } from "../../contexts/AlertContext";
 import { orderDelivered } from "../../hooks/useFirebase";
 
-export default function ConfirmDeliveredModal({ closeModal, order }) {
+export default function ConfirmDeliveredForm({ closeModal, order, setEditOrder }) {
   const { setErrorAlert, setSuccessAlert } = useAlert();
 
   function confirmOrderDelivered(e) {
@@ -14,9 +14,6 @@ export default function ConfirmDeliveredModal({ closeModal, order }) {
   }
 
   return (
-    <>
-      <Modal.Header closeButton>Order Delivered?</Modal.Header>
-      <Modal.Body>
         <Form>
           <OrderInfo order={order} />
           <div className="d-flex justify-content-center mt-2">
@@ -27,12 +24,21 @@ export default function ConfirmDeliveredModal({ closeModal, order }) {
             >
               Confirm Delivered
             </Button>
-            <Button variant="secondary" onClick={closeModal}>
+            <Button
+              variant="info"
+              className="mr-3"
+              onClick={() => setEditOrder(true)}
+            >
+              Edit Order
+            </Button>
+            <Button
+              variant="secondary"
+              className="mr-3"
+              onClick={closeModal}
+            >
               Close
             </Button>
           </div>
         </Form>
-      </Modal.Body>
-    </>
   );
 }

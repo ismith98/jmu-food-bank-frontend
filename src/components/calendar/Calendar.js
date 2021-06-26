@@ -3,13 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import dayjs from "dayjs";
 import { Modal } from "react-bootstrap";
-import ConfirmDeliveredModal from "../orders/ConfirmDeliveredModal";
+import EditOrderModal from "../orders/EditOrderModal";
 
 
 export default function Calendar({orders}) {
   const [events, setEvents] = useState([])
   const [chosenEvent, setChosenEvent] = useState({});
-  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   useEffect(() => setEvents(formatEvents(orders)), [orders])
   useEffect(() => console.log(chosenEvent), [chosenEvent])
 
@@ -23,13 +23,13 @@ export default function Calendar({orders}) {
   }
 
   function closeModal() {
-    setConfirmModalOpen(false)
+    setEditModalOpen(false)
   }
 
   function openModal(event) {
     let eventDeepClone = JSON.parse(JSON.stringify(event));
     setChosenEvent(eventDeepClone)
-    setConfirmModalOpen(true)
+    setEditModalOpen(true)
   }
 
   return (
@@ -45,8 +45,8 @@ export default function Calendar({orders}) {
         eventClick={(info) => openModal(info.event.extendedProps)}  
         events={events}
       />
-      <Modal show={confirmModalOpen} onHide={closeModal}>
-        <ConfirmDeliveredModal closeModal={closeModal} order={chosenEvent} />
+      <Modal show={editModalOpen} onHide={closeModal}>
+        <EditOrderModal closeModal={closeModal} order={chosenEvent} />
       </Modal>
     </div>
   );

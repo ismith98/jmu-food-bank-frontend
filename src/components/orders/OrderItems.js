@@ -32,7 +32,7 @@ export default function OrderItems({ item, setItems }) {
 
   return (
     <ListGroup.Item className="capitalize">
-      <Form.Group key={item.name} as={Row} controlId={item.name}>
+      <Form.Group key={`${item.name}-amount`} as={Row} controlId={item.name}>
         <Form.Label column sm="4">
           <b>{item.name} Amount</b>
         </Form.Label>
@@ -44,7 +44,7 @@ export default function OrderItems({ item, setItems }) {
           />
         </Col>
       </Form.Group>
-      <Form.Group key={item.name} as={Row} controlId={`${item.name}-Id`}>
+      <Form.Group key={`${item.name}-Id`} as={Row} controlId={`${item.name}-Id`}>
         <Form.Label column sm="4">
           {item.name} Id
         </Form.Label>
