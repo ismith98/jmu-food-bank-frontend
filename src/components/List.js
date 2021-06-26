@@ -55,10 +55,12 @@ export default function List() {
             <DeliveredOrdersList orders={deliveredOrders} />
           </Tab>
           <Tab eventKey="calendar" title="Calendar">
-            <Calendar />
+            {/* Calendar does not display properly inside tab */}
           </Tab>
         </Tabs>
       )}
+      {tabKey == "calendar" ? <Calendar /> : null}
+      
     </div>
   );
 }

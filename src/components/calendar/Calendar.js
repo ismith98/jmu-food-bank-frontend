@@ -13,7 +13,7 @@ export default function Calendar() {
         }}
         plugins={[dayGridPlugin]}
         initialView="dayGridWeek"
-        eventClick={() => console.log("hello world")}
+        eventClick={() => console.log("hello world")}      
       />
     </div>
   );
