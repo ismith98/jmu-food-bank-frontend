@@ -12,9 +12,24 @@ const firebaseConfig = {
   measurementId: "G-GN3YV3GPV1",
 };
 
+/*
+const firebaseConfigProd = {
+  apiKey: "AIzaSyDsnRLF39dbyMnkH9rOU-_duNzEwzvq96k",
+  authDomain: "the-pantry-12913.firebaseapp.com",
+  databaseURL: "https://the-pantry-12913-default-rtdb.firebaseio.com",
+  projectId: "the-pantry-12913",
+  storageBucket: "the-pantry-12913.appspot.com",
+  messagingSenderId: "541800016203",
+  appId: "1:541800016203:web:da90d5cee07292498fa0ce",
+  measurementId: "G-68K311GYM0",
+};
+*/
+
 function initApp() {
   let app = firebase.initializeApp(firebaseConfig);
   app.auth().signInAnonymously();
+  //firebase.analytics(app);
+  //firebase.analytics();
   return app;
 }
 

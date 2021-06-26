@@ -7,6 +7,7 @@ import LoadingIndicator from "./general/LoadingIndicator";
 import InventoryList from "./inventory/InventoryList";
 import OrdersList from "./orders/OrdersList";
 import DeliveredOrdersList from "./deliveredOrders/DeliveredOrdersList";
+import Calendar from "./calendar/Calendar";
 
 export default function List() {
   const [loading, setLoading] = useState(true);
@@ -52,6 +53,9 @@ export default function List() {
           </Tab>
           <Tab eventKey="deliveredOrders" title="Delivered Orders">
             <DeliveredOrdersList orders={deliveredOrders} />
+          </Tab>
+          <Tab eventKey="calendar" title="Calendar">
+            <Calendar />
           </Tab>
         </Tabs>
       )}
