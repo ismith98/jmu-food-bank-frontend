@@ -17,7 +17,7 @@ export default function OrderCard({ order }) {
   return (
     <>
       <ListGroup.Item>
-        <div className="d-flex flex-row capitalize">
+        <div className="d-flex flex-row justify-content-center capitalize">
           <div className="mr-2 ml-2">
             <OrderInfo order={order} />
           </div>

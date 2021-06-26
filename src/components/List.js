@@ -59,7 +59,7 @@ export default function List() {
           </Tab>
         </Tabs>
       )}
-      {tabKey == "calendar" ? <Calendar /> : null}
+      {tabKey === "calendar" ? <Calendar orders={orders} /> : null}
       
     </div>
   );
