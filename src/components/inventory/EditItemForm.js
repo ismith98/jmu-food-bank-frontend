@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { updateItem, removeFromDatabase } from "../../hooks/useFirebase";
 import { useAlert } from "../../contexts/AlertContext";
 
@@ -10,6 +10,7 @@ export default function EditItemForm({ item, closeModal }) {
   const [maxReservable, setMaxReservable] = useState(item.maxReservable);
   const [itemId, setItemId] = useState(item.id);
   const { setErrorAlert, setSuccessAlert } = useAlert();
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   // Update an item's values when they are changed in the DB
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function EditItemForm({ item, closeModal }) {
   function removeItem() {
     let path = "app/pantryItems";
     removeFromDatabase(path, item.id, setErrorAlert, setSuccessAlert);
+    setConfirmModalOpen(false);
     closeModal();
   }
 
@@ -56,19 +58,6 @@ export default function EditItemForm({ item, closeModal }) {
           />
         </Col>
       </Form.Group>
-      <Form.Group as={Row} controlId="amountReserved">
-        <Form.Label column sm="4">
-          Amount Reserved
-        </Form.Label>
-        <Col sm="8">
-          <Form.Control
-            value={amountReserved}
-            type="number"
-            onChange={(e) => setAmountReserved(e.target.value)}
-            disabled
-          />
-        </Col>
-      </Form.Group>
       <Form.Group as={Row} controlId="totalInventory">
         <Form.Label column sm="4">
           Total Inventory
@@ -79,6 +68,19 @@ export default function EditItemForm({ item, closeModal }) {
             type="number"
             required
             onChange={(e) => setTotalInventory(e.target.value)}
+          />
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} controlId="amountReserved">
+        <Form.Label column sm="4">
+          Amount Reserved
+        </Form.Label>
+        <Col sm="8">
+          <Form.Control
+            value={amountReserved}
+            type="number"
+            onChange={(e) => setAmountReserved(e.target.value)}
+            disabled
           />
         </Col>
       </Form.Group>
@@ -113,10 +115,28 @@ export default function EditItemForm({ item, closeModal }) {
         <Button type="submit" className="mr-3" onClick={confirmChanges}>
           Confirm Changes
         </Button>
-        <Button variant="danger" onClick={removeItem}>
+        <Button variant="danger" className="mr-3" onClick={() => setConfirmModalOpen(true)}>
           Remove Item
         </Button>
+        <Button variant="secondary" className="mr-3" onClick={closeModal}>
+          Close
+        </Button>
       </div>
+
+
+      <Modal show={confirmModalOpen} onHide={() => setConfirmModalOpen(false)}>
+        <Modal.Header closeButton> Are You Sure? </Modal.Header>
+        <Modal.Body>
+        <div className="d-flex justify-content-center mt-2">
+        <Button variant="danger" className="mr-3" onClick={removeItem}>
+            Remove Order
+          </Button>
+          <Button variant="secondary" onClick={() => setConfirmModalOpen(false)}>
+            Go Back
+          </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </Form>
   );
 }
