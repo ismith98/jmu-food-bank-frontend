@@ -32,8 +32,8 @@ function sortByName(item1, item2) {
   return 0;
 }
 
-export function getOrders(setOrders, orderId = "") {
-  //setLoading(true);
+export function getOrders(setLoading, setOrders, orderId = "") {
+  setLoading(true);
   const ordersRef = firebase.database().ref(`orders/${orderId}`);
   ordersRef.on("value", (snapshot) => {
     let value = snapshot.val();
@@ -46,6 +46,7 @@ export function getOrders(setOrders, orderId = "") {
       return orders;
     }
   });
+  setLoading(false);
 }
 
 function sortByTimeOrdered(order1, order2) {
