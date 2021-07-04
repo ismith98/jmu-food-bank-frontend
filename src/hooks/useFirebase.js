@@ -78,6 +78,27 @@ export function getDeliveredOrders(setDeliveredOrders, orderId = "") {
   });
 }
 
+export function getAnnouncement(setAnnouncement) {
+  const announcementRef = firebase.database().ref(`app/announcement`);
+  announcementRef.on("value", (snapshot) => {
+    let value = snapshot.val();
+    if (value !== null) {
+      //let orders = Object.values(value);
+
+      setAnnouncement(value.message);
+      return value.message;
+    }
+  });
+}
+
+export function updateAnnouncement(message, setErrorAlert, setSuccessAlert) {
+  const announcementRef = firebase.database().ref(`app/announcement`);
+  announcementRef.update(message, (error) => {
+    if (error) setErrorAlert(`Update failed |  ${error}`);
+    else setSuccessAlert("Announcement Updated Succesfully");
+  })
+}
+
 function sortByTimeDelivered(order1, order2) {
   var dateA = new Date(order1.timeDelivered);
   var dateB = new Date(order2.timeDelivered);
