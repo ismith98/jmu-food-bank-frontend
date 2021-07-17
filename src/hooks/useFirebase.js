@@ -91,12 +91,39 @@ export function getAnnouncement(setAnnouncement) {
   });
 }
 
+export function getFAQs(setFAQs) {
+  const FAQsRef = firebase.database().ref(`app/FAQs`);
+  FAQsRef.on("value", (snapshot) => {
+    let value = snapshot.val();
+    if (value !== null) {
+      let FAQs = Object.values(value);
+
+      setFAQs(FAQs);
+      return FAQs;
+    }
+  });
+}
+export function updateFAQ(
+  FAQInfo,
+  FAQId,
+  setErrorAlert,
+  setSuccessAlert,
+  addFAQ = false
+) {
+  const FAQsRef = firebase.database().ref(`app/FAQs/${FAQId}`);
+  FAQsRef.update(FAQInfo, (error) => {
+    if (error) setErrorAlert(`Update failed |  ${error}`);
+    else if (addFAQ) setSuccessAlert("FAQ Added Succesfully");
+    else setSuccessAlert("FAQ Updated Succesfully");
+  });
+}
+
 export function updateAnnouncement(message, setErrorAlert, setSuccessAlert) {
   const announcementRef = firebase.database().ref(`app/announcement`);
   announcementRef.update(message, (error) => {
     if (error) setErrorAlert(`Update failed |  ${error}`);
     else setSuccessAlert("Announcement Updated Succesfully");
-  })
+  });
 }
 
 function sortByTimeDelivered(order1, order2) {
